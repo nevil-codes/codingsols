@@ -62,13 +62,6 @@ CREATE TABLE `comments` (
   `comment_time` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `comments`
---
-
-INSERT INTO `comments` (`comment_id`, `comment_content`, `thread_id`, `comment_by`, `comment_time`) VALUES
-(14, 'YEAH BROOTHER ITS A PYTHON RAMEWORK', 25, 11, '2022-12-21 02:02:13');
-
 -- --------------------------------------------------------
 
 --
@@ -98,13 +91,6 @@ CREATE TABLE `threads` (
   `timestamp` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `threads`
---
-
-INSERT INTO `threads` (`thread_id`, `thread_title`, `thread_desc`, `thread_cat_id`, `thread_user_id`, `timestamp`) VALUES
-(25, 'flask is a framework', 'yupss', 2, 11, '2022-12-21 02:01:54');
-
 -- --------------------------------------------------------
 
 --
@@ -117,14 +103,6 @@ CREATE TABLE `users` (
   `user_pass` varchar(255) NOT NULL,
   `timestamp` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`srno`, `user_email`, `user_pass`, `timestamp`) VALUES
-(10, 'dhaval4@gmail.com', '$2y$10$DxdcosCeldc93BXJn76hOezcaMAEAwYrkZcQt3zZUR7lK7xCsgqGC', '2022-12-21 01:52:16'),
-(11, 'dhaval', '$2y$10$O9KBJDQ9CsIwqtmi9/ltleR6SfILXFl7.Ht0jckGDqR1JBuCerG5K', '2022-12-21 01:57:04');
 
 --
 -- Indexes for dumped tables
@@ -158,7 +136,8 @@ ALTER TABLE `threads`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`srno`);
+  ADD PRIMARY KEY (`srno`),
+  ADD UNIQUE KEY `user_email` (`user_email`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -174,25 +153,25 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `comment_id` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `comment_id` int(8) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
-  MODIFY `srno` int(25) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `srno` int(25) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `threads`
 --
 ALTER TABLE `threads`
-  MODIFY `thread_id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `thread_id` int(7) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `srno` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `srno` int(8) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,9 +1,10 @@
+<?php require_once 'partials/_init.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Home</title>
+    <title>Codingsols - Coding Forum</title>
     <style>
       #ques{
             min-height: 433px;
@@ -12,10 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
   </head>
   <body>
-<?php
-include "partials/_header.php";
-include "partials/_dbconnect.php";
-?>
+<?php include "partials/_header.php"; ?>
 
 <!-- slider -->
 
@@ -27,13 +25,13 @@ include "partials/_dbconnect.php";
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="img/ing-1.jpeg" class="d-block w-100" alt="...">
+      <img src="img/ing-1.jpeg" class="d-block w-100" alt="">
     </div>
     <div class="carousel-item">
-      <img src="img/ing-2.jpeg" class="d-block w-100" alt="...">
+      <img src="img/ing-2.jpeg" class="d-block w-100" alt="">
     </div>
     <div class="carousel-item">
-      <img src="img/ing-3.jpeg" class="d-block w-100" alt="...">
+      <img src="img/ing-3.jpeg" class="d-block w-100" alt="">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
@@ -50,25 +48,20 @@ include "partials/_dbconnect.php";
   <h2 class="text-center mt-3">Welcome to Codingsols</h2>
   <div class="row my-3">
 <?php
-  $sql = "SELECT * FROM `categories`";
-  $result = mysqli_query($con,$sql);
-  while($row = mysqli_fetch_assoc($result))
-  {
-   $id = $row['category_id']; 
-  $cat = $row['category_name'];
-  $cat_ds = $row['category_description'];
-echo'
-    <div class="col-md-4">
-    <div class="card" style="width: 18rem;">
-  <img src="https://source.unsplash.com/500x400/?coding,'.$cat.'" class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title"><a href="threadlist.php?id='.$id.'">'.$cat.'</a></h5>
-    <p class="card-text">'.substr($cat_ds,0,90).'</p>
-    <a href="threadlist.php?id='.$id.'" class="btn btn-primary">View Thread</a  >
-  </div>
-</div>
-    </div>
-  ';}
+  $result = mysqli_query($con, 'SELECT category_id, category_name, category_description FROM categories ORDER BY category_id');
+  while ($row = mysqli_fetch_assoc($result)) {
+    $id = (int) $row['category_id'];
+    echo '
+    <div class="col-md-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title"><a href="threadlist.php?id=' . $id . '">' . e($row['category_name']) . '</a></h5>
+          <p class="card-text">' . e(mb_strimwidth($row['category_description'], 0, 90, '...')) . '</p>
+          <a href="threadlist.php?id=' . $id . '" class="btn btn-primary">View Threads</a>
+        </div>
+      </div>
+    </div>';
+  }
   ?>
     </div>
 </div>

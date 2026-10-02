@@ -1,6 +1,6 @@
 <?php
-session_start();
-echo "Logging you out please wait.........";
+require_once __DIR__ . '/_init.php';
+
+$_SESSION = [];
 session_destroy();
-header("Location: /codingsols/index.php");
-?>
+redirect('../index.php');
