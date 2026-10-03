@@ -1,35 +1,111 @@
-# codingsols
+# Codingsols
 
-## Introduction
+A community forum where programmers ask questions, share answers and help each other level up.
 
-codingsols is a coding forum designed to connect programmers of all levels, from beginners to experts.  It provides a platform for asking and answering questions, sharing knowledge, and collaborating on coding projects.  The goal is to foster a supportive and inclusive community where everyone can learn and grow.
+[![CI](https://github.com/nevil-codes/codingsols/actions/workflows/ci.yml/badge.svg)](https://github.com/nevil-codes/codingsols/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Installation
+![Codingsols home page](docs/screenshots/home-light.png)
 
-These instructions assume you have a basic understanding of how to use Git and a web server.  The specifics of installation will depend on the technology stack used to build codingsols.  This example assumes a Node.js/Express.js based backend and a React frontend (replace with your actual tech stack):
-
-
-1. **Clone the repository:**
-
-git clone (https://github.com/niks1107/codingsols.git)
-## Usage
-
-**Posting a Question:**  Navigate to the "Ask a Question" section of the forum.  Provide a clear title, detailed description of your problem, relevant code snippets, and any error messages you've encountered.
-
-**Answering a Question:**  Browse through existing questions and provide helpful answers.  Use code formatting (e.g., backticks ``` for inline code, triple backticks ``` for code blocks) to make your answers easy to read.
-
+| Dark mode | Thread with syntax highlighting |
+| --- | --- |
+| ![Home page in dark mode](docs/screenshots/home-dark.png) | ![Thread page](docs/screenshots/thread-dark.png) |
 
 ## Features
 
-* **User Accounts:** Create profiles, manage settings, and track your activity.
-* **Question & Answer System:**  Ask questions, receive answers, and upvote/downvote responses.
-* **Code Highlighting:** Syntax highlighting for various programming languages.
-* **Search Functionality:** Easily find relevant questions and answers.
-* **Tags:** Categorize questions using tags for better searchability.
-* **User Profiles:** Display user information and activity.
-* **Commenting:** Comment on questions and answers for discussions.
+- **Categories** for C++, Python, Java, JavaScript, Django, Flask, C# and Ruby
+- **Questions and answers** written in Markdown, with a live preview and syntax-highlighted code blocks
+- **Accounts**: sign up, log in, email verification, password reset and profile settings
+- **Ownership rules**: only authors can edit or delete their questions and replies
+- **Search** across question titles and bodies
+- **Activity page** listing your questions and recent replies
+- **Light and dark themes** that follow your system setting, with a manual toggle
+- **Responsive and accessible**: mobile layout, keyboard navigation, skip link and visible focus states
+- **Secure by default**: CSRF protection, escaped output, safe Markdown (raw HTML and `javascript:` links are stripped) and rate limiting on posting and the contact form
+
+## Tech stack
+
+| Layer | Tools |
+| --- | --- |
+| Backend | PHP 8.4+, Laravel 13, Breeze (auth) |
+| Frontend | Blade, Tailwind CSS, Alpine.js, highlight.js |
+| Database | SQLite by default; MySQL / MariaDB / PostgreSQL supported |
+| Testing | Pest, Laravel Pint |
+| CI | GitHub Actions |
+
+## Getting started
+
+Requirements: PHP 8.4+, Composer and Node.js 20+.
+
+```bash
+git clone https://github.com/nevil-codes/codingsols.git
+cd codingsols
+
+composer install
+npm install
+
+cp .env.example .env
+php artisan key:generate
+
+touch database/database.sqlite
+php artisan migrate --seed
+
+composer run dev
+```
+
+Open http://localhost:8000. In the `local` environment, the seeder creates sample questions and a demo account:
+
+- **Email:** `demo@codingsols.test`
+- **Password:** `password`
+
+Emails (verification, password reset) are written to `storage/logs/laravel.log` by default. Set the `MAIL_*` variables in `.env` to send real mail.
+
+### Using MySQL instead of SQLite
+
+Update `.env`:
+
+```dotenv
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=codingsols
+DB_USERNAME=your_user
+DB_PASSWORD=your_password
+```
+
+Then run `php artisan migrate --seed`.
+
+## Running tests
+
+```bash
+php artisan test        # Pest test suite
+vendor/bin/pint --test  # code style check
+```
+
+## Project structure
+
+```
+app/Http/Controllers   Home, categories, threads, comments, search, contact
+app/Models             Category, Thread, Comment, ContactMessage, User
+app/Policies           Who can edit or delete threads and comments
+database/seeders       Categories, plus demo content for local development
+resources/views        Blade pages and reusable components (resources/views/components)
+tests/Feature          HTTP tests for every feature
+legacy/                The original plain-PHP version, kept for reference
+```
+
+## Roadmap
+
+Planned work is tracked in [GitHub issues](https://github.com/nevil-codes/codingsols/issues) and [milestones](https://github.com/nevil-codes/codingsols/milestones): tags, voting and accepted answers, moderation tools, and deployment.
 
 ## Contributing
 
-We welcome contributions!  Please see our [CONTRIBUTING.md](CONTRIBUTING.md) file for details on how to contribute code, documentation, or other improvements.
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) and the [Code of Conduct](CODE_OF_CONDUCT.md). Issues labeled [`good first issue`](https://github.com/nevil-codes/codingsols/labels/good%20first%20issue) are a good place to start.
 
+## Security
+
+Please report vulnerabilities privately. See [SECURITY.md](SECURITY.md).
+
+## License
+
+Released under the [MIT License](LICENSE).

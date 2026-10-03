@@ -1,0 +1,65 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/jetbrains-mono';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        color-scheme: light;
+    }
+
+    .dark {
+        color-scheme: dark;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+/* Syntax highlighting (highlight.js token classes). Kept outside @layer so
+   Tailwind doesn't purge classes that only exist at runtime. */
+.hljs-comment,
+.hljs-quote {
+    @apply italic text-zinc-500;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-literal,
+.hljs-built_in {
+    @apply text-indigo-600 dark:text-indigo-300;
+}
+
+.hljs-string,
+.hljs-regexp,
+.hljs-addition {
+    @apply text-emerald-700 dark:text-emerald-300;
+}
+
+.hljs-number,
+.hljs-symbol,
+.hljs-variable,
+.hljs-template-variable {
+    @apply text-amber-700 dark:text-amber-300;
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-function .hljs-title {
+    @apply text-sky-700 dark:text-sky-300;
+}
+
+.hljs-type,
+.hljs-class .hljs-title,
+.hljs-attr,
+.hljs-attribute {
+    @apply text-fuchsia-700 dark:text-fuchsia-300;
+}
+
+.hljs-meta,
+.hljs-deletion {
+    @apply text-rose-700 dark:text-rose-300;
+}
