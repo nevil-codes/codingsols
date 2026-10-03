@@ -1,112 +1,42 @@
 <?php
-error_reporting(0);
-  include 'partials/_header.php';
-  $alert = $_GET['alert'];
-if($alert == "Data updated successfully")
-{
-  echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-  <strong>Success!</strong> Your data has been updated successfully.  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>';
-}
-  include 'partials/_dbconnect.php';
-  $users = $_GET['q'];
-  $sql = "SELECT * FROM `users` WHERE user_email= '$users'";
-  $result = mysqli_query($con,$sql);
-        
-  while($row=mysqli_fetch_assoc($result))
-      {
-          $email = $row['user_email'];
-          $name = $row['user_name'];
-          $mno = $row['user_mobile'];
-          $pwd = $row['user_pass'];
-          $time = $row['timestamp'];
-      }
-if($name == null)
-{
-  $name = "Update your full name";
+require_once 'partials/_init.php';
+
+if (!is_logged_in()) {
+  redirect('index.php');
 }
 
-if($mno == null)
-{
-  $mno = "Update your mobile number";
+$user_id = current_user_id();
+$stmt = mysqli_prepare($con, 'SELECT user_email, timestamp FROM users WHERE srno = ?');
+mysqli_stmt_bind_param($stmt, 'i', $user_id);
+mysqli_stmt_execute($stmt);
+$user = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
+if (!$user) {
+  redirect('partials/_logout.php');
 }
-if($email == null)
-{
-  $email = "Update your email";
-}
-if($pwd == null)
-{
-  $pwd = "Update your password";
-}
-else{
-  $pwd = "********";
-}
-
-echo'<!DOCTYPE html>
+?>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  ';
-    
-    echo ' <script>
-    // Function to enable text fields when Update button is clicked
-    function enableFields() {
-      document.getElementById("name").disabled = false;
-      document.getElementById("mobile").disabled = false;
-      document.getElementById("email").disabled = false;
-      document.getElementById("password").disabled = false;
-      document.getElementById("updateButton").style.display = "none";
-      document.getElementById("saveButton").style.display = "inline-block";
-    }
-  </script>
-</head>
-<body>
-  <div class="container mt-5">
-    <h2 class="mb-4 display-4 text-center">User Profile</h2>
-    <form action="handleupdate.php" method="POST">
-      <!-- Name Field -->
-      <div class="mb-3">
-        <label for="name" class="form-label">Full Name</label>
-        <input type="text" class="form-control" id="name" value="';
-        echo $users. '"disabled>
-      </div>
-      
-      <!-- Mobile Number Field -->
-      <div class="mb-3">
-        <label for="mobile" class="form-label">Mobile Number</label>
-        <input type="text" class="form-control" id="mobile" value="';
-        echo $mno . '" disabled>
-      </div>
-
-      <!-- Email Field -->
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your Profile - Codingsols</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  </head>
+  <body>
+    <?php include 'partials/_header.php'; ?>
+    <div class="container mt-5 pb-5">
+      <h2 class="mb-4 display-4 text-center">User Profile</h2>
       <div class="mb-3">
         <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" value="';
-        echo $email. '" disabled>
+        <input type="email" class="form-control" id="email" value="<?= e($user['user_email']) ?>" disabled>
       </div>
-
-      <!-- Password Field -->
       <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" value ="';
-        echo $pwd. '" disabled>
+        <label for="joined" class="form-label">Member since</label>
+        <input type="text" class="form-control" id="joined" value="<?= e($user['timestamp']) ?>" disabled>
       </div>
-
-      <!-- Update and Save Buttons -->
-      <button type="button" class="btn btn-secondary" id="updateButton" onclick="enableFields()">Update</button>
-      <button type="submit" class="btn btn-primary" id="saveButton" style="display:none;">Save Changes</button>
-    </form>
-  </div>
-
-  <!-- Bootstrap JS and dependencies -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+      <p class="text-muted">Profile editing is coming in the next version of Codingsols.</p>
+    </div>
+    <?php include 'partials/_footer.php'; ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+  </body>
 </html>
-';
-
-
-?>
- 
