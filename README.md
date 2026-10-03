@@ -27,7 +27,7 @@ A community forum where programmers ask questions, share answers and help each o
 
 | Layer | Tools |
 | --- | --- |
-| Backend | PHP 8.3+, Laravel 13, Breeze (auth) |
+| Backend | PHP 8.4+, Laravel 13, Breeze (auth) |
 | Frontend | Blade, Tailwind CSS, Alpine.js, highlight.js |
 | Database | SQLite by default; MySQL / MariaDB / PostgreSQL supported |
 | Testing | Pest, Laravel Pint |
@@ -35,7 +35,7 @@ A community forum where programmers ask questions, share answers and help each o
 
 ## Getting started
 
-Requirements: PHP 8.3+, Composer and Node.js 20+.
+Requirements: PHP 8.4+, Composer and Node.js 20+.
 
 ```bash
 git clone https://github.com/nevil-codes/codingsols.git
