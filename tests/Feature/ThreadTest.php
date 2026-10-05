@@ -127,9 +127,9 @@ test('search finds threads by title and body', function () {
 
     $this->get(route('search', ['q' => 'pandas']))
         ->assertOk()
-        ->assertSee('Pandas merge question')
-        ->assertDontSee('Unrelated');
+        ->assertSeeText('Pandas merge question')
+        ->assertDontSeeText('Unrelated');
 
     $this->get(route('search', ['q' => 'pointers']))
-        ->assertSee('Unrelated');
+        ->assertSeeText('Unrelated');
 });

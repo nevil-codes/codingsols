@@ -17,7 +17,7 @@ A community forum where programmers ask questions, share answers and help each o
 - **Questions and answers** written in Markdown, with a live preview and syntax-highlighted code blocks
 - **Accounts**: sign up, log in, email verification, password reset and profile settings
 - **Ownership rules**: only authors can edit or delete their questions and replies
-- **Search** across question titles and bodies
+- **Search** across questions and replies, matching every word in any order, with highlighted results
 - **Activity page** listing your questions and recent replies
 - **Light and dark themes** that follow your system setting, with a manual toggle
 - **Responsive and accessible**: mobile layout, keyboard navigation, skip link and visible focus states
@@ -74,6 +74,10 @@ DB_PASSWORD=your_password
 ```
 
 Then run `php artisan migrate --seed`.
+
+### Search
+
+Search runs on [Laravel Scout](https://laravel.com/docs/scout). By default it uses the database driver (`SCOUT_DRIVER=database`), which needs no extra services and matches every word of the query in titles, bodies and replies. For typo tolerance and relevance ranking on a larger site, switch to [Meilisearch](https://www.meilisearch.com) or [Typesense](https://typesense.org): install the client package, set `SCOUT_DRIVER`, then run `php artisan scout:import "App\Models\Thread"` and `php artisan scout:import "App\Models\Comment"`.
 
 ## Running tests
 
