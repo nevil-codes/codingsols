@@ -88,7 +88,7 @@
             </div>
 
             <div class="hidden md:flex items-center gap-3">
-                <form action="<?php echo e(route('search')); ?>" method="GET" role="search">
+                <form action="<?php echo e(route('search')); ?>" method="GET" role="search" aria-label="Site">
                     <label for="nav-search" class="sr-only">Search questions</label>
                     <div class="relative">
                         <svg class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.45 4.39l3.08 3.08a.75.75 0 1 1-1.06 1.06l-3.08-3.08A7 7 0 0 1 2 9Z" clip-rule="evenodd" /></svg>
@@ -130,7 +130,8 @@
 <?php endif; ?>
 <?php $component->withAttributes(['align' => 'right','width' => '48']); ?>
                          <?php $__env->slot('trigger', null, []); ?> 
-                            <button class="flex items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950" aria-label="Account menu">
+                            <button class="flex items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950">
+                                <span class="sr-only">Open account menu</span>
                                 <?php if (isset($component)) { $__componentOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal8ca5b43b8fff8bb34ab2ba4eb4bdd67b = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.avatar','data' => ['user' => Auth::user(),'size' => 'sm']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -157,7 +158,7 @@
                          <?php $__env->slot('content', null, []); ?> 
                             <div class="px-4 py-2 border-b border-gray-100 dark:border-gray-700">
                                 <div class="text-sm font-medium truncate"><?php echo e(Auth::user()->name); ?></div>
-                                <div class="text-xs text-gray-500 truncate"><?php echo e(Auth::user()->email); ?></div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400 truncate"><?php echo e(Auth::user()->email); ?></div>
                             </div>
                             <?php if (isset($component)) { $__componentOriginal68cb1971a2b92c9735f83359058f7108 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal68cb1971a2b92c9735f83359058f7108 = $attributes; } ?>
@@ -277,7 +278,7 @@
 <?php $component = $__componentOriginal2090438866f3dcdb76cd8b070bcc302d; ?>
 <?php unset($__componentOriginal2090438866f3dcdb76cd8b070bcc302d); ?>
 <?php endif; ?></div>
-                <button @click="open = ! open" class="p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="Toggle menu">
+                <button @click="open = ! open" class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="Toggle menu">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <path :class="{ 'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{ 'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -289,7 +290,7 @@
 
     <div id="mobile-menu" x-cloak x-show="open" class="md:hidden border-t border-gray-200 dark:border-gray-800">
         <div class="px-4 py-3">
-            <form action="<?php echo e(route('search')); ?>" method="GET" role="search">
+            <form action="<?php echo e(route('search')); ?>" method="GET" role="search" aria-label="Mobile site">
                 <label for="mobile-search" class="sr-only">Search questions</label>
                 <input id="mobile-search" type="search" name="q" placeholder="Search questions…"
                     class="w-full rounded-lg border-gray-200 bg-gray-50 py-2 text-sm focus:border-accent-500 focus:ring-accent-500 dark:border-gray-800 dark:bg-gray-900">
@@ -379,7 +380,7 @@
 <?php endif; ?>
                     <div>
                         <div class="font-medium"><?php echo e(Auth::user()->name); ?></div>
-                        <div class="text-sm text-gray-500"><?php echo e(Auth::user()->email); ?></div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400"><?php echo e(Auth::user()->email); ?></div>
                     </div>
                 </div>
                 <div class="mt-3 space-y-1">

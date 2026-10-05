@@ -83,8 +83,8 @@ unset($__defined_vars, $__key, $__value); ?>
         </div>
     </div>
     <div class="shrink-0 self-center text-center">
-        <div class="text-sm font-semibold <?php echo e($thread->comments_count ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-400'); ?>"><?php echo e($thread->comments_count); ?></div>
-        <div class="text-xs text-gray-500"><?php echo e(Str::plural('reply', $thread->comments_count)); ?></div>
+        <div class="text-sm font-semibold <?php echo e($thread->comments_count ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-500 dark:text-gray-400'); ?>"><?php echo e($thread->comments_count); ?></div>
+        <div class="text-xs text-gray-500 dark:text-gray-400"><?php echo e(Str::plural('reply', $thread->comments_count)); ?></div>
     </div>
 </li>
 <?php /**PATH /Users/nick/codingsols/resources/views/components/thread-row.blade.php ENDPATH**/ ?>

@@ -15,7 +15,7 @@
             </div>
 
             <div class="hidden md:flex items-center gap-3">
-                <form action="{{ route('search') }}" method="GET" role="search">
+                <form action="{{ route('search') }}" method="GET" role="search" aria-label="Site">
                     <label for="nav-search" class="sr-only">Search questions</label>
                     <div class="relative">
                         <svg class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.45 4.39l3.08 3.08a.75.75 0 1 1-1.06 1.06l-3.08-3.08A7 7 0 0 1 2 9Z" clip-rule="evenodd" /></svg>
@@ -29,7 +29,8 @@
                 @auth
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
-                            <button class="flex items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950" aria-label="Account menu">
+                            <button class="flex items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950">
+                                <span class="sr-only">Open account menu</span>
                                 <x-avatar :user="Auth::user()" size="sm" />
                             </button>
                         </x-slot>
@@ -37,7 +38,7 @@
                         <x-slot name="content">
                             <div class="px-4 py-2 border-b border-gray-100 dark:border-gray-700">
                                 <div class="text-sm font-medium truncate">{{ Auth::user()->name }}</div>
-                                <div class="text-xs text-gray-500 truncate">{{ Auth::user()->email }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ Auth::user()->email }}</div>
                             </div>
                             <x-dropdown-link :href="route('dashboard')">My activity</x-dropdown-link>
                             <x-dropdown-link :href="route('profile.edit')">Profile</x-dropdown-link>
@@ -57,7 +58,7 @@
 
             <div class="flex items-center gap-1 md:hidden">
                 <div x-data="themeToggle"><x-theme-toggle /></div>
-                <button @click="open = ! open" class="p-2 rounded-md text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="Toggle menu">
+                <button @click="open = ! open" class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="Toggle menu">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <path :class="{ 'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{ 'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -69,7 +70,7 @@
 
     <div id="mobile-menu" x-cloak x-show="open" class="md:hidden border-t border-gray-200 dark:border-gray-800">
         <div class="px-4 py-3">
-            <form action="{{ route('search') }}" method="GET" role="search">
+            <form action="{{ route('search') }}" method="GET" role="search" aria-label="Mobile site">
                 <label for="mobile-search" class="sr-only">Search questions</label>
                 <input id="mobile-search" type="search" name="q" placeholder="Search questions…"
                     class="w-full rounded-lg border-gray-200 bg-gray-50 py-2 text-sm focus:border-accent-500 focus:ring-accent-500 dark:border-gray-800 dark:bg-gray-900">
@@ -86,7 +87,7 @@
                     <x-avatar :user="Auth::user()" />
                     <div>
                         <div class="font-medium">{{ Auth::user()->name }}</div>
-                        <div class="text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                        <div class="text-sm text-gray-500 dark:text-gray-400">{{ Auth::user()->email }}</div>
                     </div>
                 </div>
                 <div class="mt-3 space-y-1">

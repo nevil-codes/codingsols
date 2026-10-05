@@ -2,7 +2,7 @@
     <x-input-label for="title" value="Title" />
     <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $thread->title ?? '')" required autofocus maxlength="255"
         placeholder="e.g. How do I read a CSV file into a pandas DataFrame?" />
-    <p class="mt-1 text-xs text-gray-500">Summarize the problem in one sentence.</p>
+    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Summarize the problem in one sentence.</p>
     <x-input-error :messages="$errors->get('title')" class="mt-2" />
 </div>
 

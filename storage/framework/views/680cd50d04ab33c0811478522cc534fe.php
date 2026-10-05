@@ -231,7 +231,7 @@
                                             <form method="POST" action="<?php echo e(route('comments.destroy', $comment)); ?>" onsubmit="return confirm('Delete this reply?')">
                                                 <?php echo csrf_field(); ?>
                                                 <?php echo method_field('DELETE'); ?>
-                                                <button class="text-xs text-gray-500 hover:text-red-600 dark:hover:text-red-400">Delete</button>
+                                                <button class="text-xs text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400">Delete</button>
                                             </form>
                                         <?php endif; ?>
                                     </div>
@@ -367,7 +367,7 @@
 <?php unset($__componentOriginal99e3095fe204bf0a105d1301124943c8); ?>
 <?php endif; ?>
                     <div>
-                        <div class="text-xs text-gray-500">Category</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">Category</div>
                         <a href="<?php echo e(route('categories.show', $thread->category)); ?>" class="font-semibold hover:text-accent-600 dark:hover:text-accent-400"><?php echo e($thread->category->name); ?></a>
                     </div>
                 </div>

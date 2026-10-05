@@ -5,8 +5,9 @@
     </head>
     <body class="font-sans antialiased bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100">
         <div class="min-h-screen flex flex-col items-center justify-center px-4 py-10">
-            <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-2 font-semibold text-lg tracking-tight">
-                <?php if (isset($component)) { $__componentOriginal8892e718f3d0d7a916180885c6f012e7 = $component; } ?>
+            <header>
+                <a href="<?php echo e(route('home')); ?>" class="flex items-center gap-2 font-semibold text-lg tracking-tight">
+                    <?php if (isset($component)) { $__componentOriginal8892e718f3d0d7a916180885c6f012e7 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal8892e718f3d0d7a916180885c6f012e7 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.application-logo','data' => ['class' => 'h-9 w-9']] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('application-logo'); ?>
@@ -26,15 +27,20 @@
 <?php $component = $__componentOriginal8892e718f3d0d7a916180885c6f012e7; ?>
 <?php unset($__componentOriginal8892e718f3d0d7a916180885c6f012e7); ?>
 <?php endif; ?>
-                <span>codingsols</span>
-            </a>
+                    <span>codingsols</span>
+                </a>
+            </header>
 
-            <div class="w-full sm:max-w-md mt-8 px-6 py-8 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
+            <main class="w-full sm:max-w-md mt-8 px-6 py-8 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm">
+                <?php if($title): ?>
+                    <h1 class="mb-6 text-xl font-semibold tracking-tight"><?php echo e($title); ?></h1>
+                <?php endif; ?>
+
                 <?php echo e($slot); ?>
 
-            </div>
+            </main>
 
-            <div class="mt-6" x-data="themeToggle">
+            <footer class="mt-6" x-data="themeToggle">
                 <?php if (isset($component)) { $__componentOriginal2090438866f3dcdb76cd8b070bcc302d = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal2090438866f3dcdb76cd8b070bcc302d = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.theme-toggle','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -55,7 +61,7 @@
 <?php $component = $__componentOriginal2090438866f3dcdb76cd8b070bcc302d; ?>
 <?php unset($__componentOriginal2090438866f3dcdb76cd8b070bcc302d); ?>
 <?php endif; ?>
-            </div>
+            </footer>
         </div>
     </body>
 </html>

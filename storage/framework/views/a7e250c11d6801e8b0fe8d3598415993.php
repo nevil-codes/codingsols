@@ -22,7 +22,7 @@
                 Get unstuck on C++, Python, JavaScript and more, and help others along the way.
             </p>
 
-            <form action="<?php echo e(route('search')); ?>" method="GET" role="search" class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
+            <form action="<?php echo e(route('search')); ?>" method="GET" role="search" aria-label="Questions" class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
                 <label for="hero-search" class="sr-only">Search questions</label>
                 <input id="hero-search" type="search" name="q" placeholder="Search questions…"
                     class="flex-1 rounded-lg border-gray-300 bg-white px-4 py-3 shadow-sm focus:border-accent-500 focus:ring-accent-500 dark:border-gray-700 dark:bg-gray-900">
@@ -83,7 +83,7 @@
 <?php $component = $__componentOriginal99e3095fe204bf0a105d1301124943c8; ?>
 <?php unset($__componentOriginal99e3095fe204bf0a105d1301124943c8); ?>
 <?php endif; ?>
-                            <span class="text-xs text-gray-500"><?php echo e($category->threads_count); ?> <?php echo e(Str::plural('thread', $category->threads_count)); ?></span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400"><?php echo e($category->threads_count); ?> <?php echo e(Str::plural('thread', $category->threads_count)); ?></span>
                         </div>
                         <h3 class="mt-4 font-semibold"><?php echo e($category->name); ?></h3>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2"><?php echo e($category->description); ?></p>

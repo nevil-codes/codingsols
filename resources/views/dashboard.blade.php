@@ -27,12 +27,12 @@
                             <li class="flex items-center justify-between gap-4 py-4">
                                 <div class="min-w-0">
                                     <a href="{{ route('threads.show', $thread) }}" class="font-medium hover:text-accent-600 dark:hover:text-accent-400">{{ $thread->title }}</a>
-                                    <div class="mt-1 flex items-center gap-2 text-xs text-gray-500">
+                                    <div class="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                         <x-badge>{{ $thread->category->name }}</x-badge>
                                         {{ $thread->created_at->diffForHumans() }}
                                     </div>
                                 </div>
-                                <span class="shrink-0 text-sm text-gray-500">{{ $thread->comments_count }} {{ Str::plural('reply', $thread->comments_count) }}</span>
+                                <span class="shrink-0 text-sm text-gray-500 dark:text-gray-400">{{ $thread->comments_count }} {{ Str::plural('reply', $thread->comments_count) }}</span>
                             </li>
                         @endforeach
                     </ul>
@@ -51,7 +51,7 @@
                             <li class="py-4">
                                 <a href="{{ route('threads.show', $comment->thread) }}#reply-{{ $comment->id }}" class="text-sm font-medium hover:text-accent-600 dark:hover:text-accent-400">{{ $comment->thread->title }}</a>
                                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{{ Str::limit($comment->body, 160) }}</p>
-                                <p class="mt-1 text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</p>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</p>
                             </li>
                         @endforeach
                     </ul>

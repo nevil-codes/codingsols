@@ -13,7 +13,7 @@
                 Get unstuck on C++, Python, JavaScript and more, and help others along the way.
             </p>
 
-            <form action="{{ route('search') }}" method="GET" role="search" class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
+            <form action="{{ route('search') }}" method="GET" role="search" aria-label="Questions" class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
                 <label for="hero-search" class="sr-only">Search questions</label>
                 <input id="hero-search" type="search" name="q" placeholder="Search questions…"
                     class="flex-1 rounded-lg border-gray-300 bg-white px-4 py-3 shadow-sm focus:border-accent-500 focus:ring-accent-500 dark:border-gray-700 dark:bg-gray-900">
@@ -37,7 +37,7 @@
                         class="group rounded-xl border border-gray-200 bg-white p-5 transition hover:-translate-y-0.5 hover:border-accent-300 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-accent-500/50">
                         <div class="flex items-center justify-between">
                             <x-category-icon :category="$category" class="group-hover:text-accent-600 dark:group-hover:text-accent-400" />
-                            <span class="text-xs text-gray-500">{{ $category->threads_count }} {{ Str::plural('thread', $category->threads_count) }}</span>
+                            <span class="text-xs text-gray-500 dark:text-gray-400">{{ $category->threads_count }} {{ Str::plural('thread', $category->threads_count) }}</span>
                         </div>
                         <h3 class="mt-4 font-semibold">{{ $category->name }}</h3>
                         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{{ $category->description }}</p>

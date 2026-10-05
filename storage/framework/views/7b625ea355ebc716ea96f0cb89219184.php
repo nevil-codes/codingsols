@@ -85,7 +85,7 @@
                             <li class="flex items-center justify-between gap-4 py-4">
                                 <div class="min-w-0">
                                     <a href="<?php echo e(route('threads.show', $thread)); ?>" class="font-medium hover:text-accent-600 dark:hover:text-accent-400"><?php echo e($thread->title); ?></a>
-                                    <div class="mt-1 flex items-center gap-2 text-xs text-gray-500">
+                                    <div class="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
                                         <?php if (isset($component)) { $__componentOriginal2ddbc40e602c342e508ac696e52f8719 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal2ddbc40e602c342e508ac696e52f8719 = $attributes; } ?>
 <?php $component = Illuminate\View\AnonymousComponent::resolve(['view' => 'components.badge','data' => []] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -109,7 +109,7 @@
 
                                     </div>
                                 </div>
-                                <span class="shrink-0 text-sm text-gray-500"><?php echo e($thread->comments_count); ?> <?php echo e(Str::plural('reply', $thread->comments_count)); ?></span>
+                                <span class="shrink-0 text-sm text-gray-500 dark:text-gray-400"><?php echo e($thread->comments_count); ?> <?php echo e(Str::plural('reply', $thread->comments_count)); ?></span>
                             </li>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
@@ -164,7 +164,7 @@
                             <li class="py-4">
                                 <a href="<?php echo e(route('threads.show', $comment->thread)); ?>#reply-<?php echo e($comment->id); ?>" class="text-sm font-medium hover:text-accent-600 dark:hover:text-accent-400"><?php echo e($comment->thread->title); ?></a>
                                 <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2"><?php echo e(Str::limit($comment->body, 160)); ?></p>
-                                <p class="mt-1 text-xs text-gray-500"><?php echo e($comment->created_at->diffForHumans()); ?></p>
+                                <p class="mt-1 text-xs text-gray-500 dark:text-gray-400"><?php echo e($comment->created_at->diffForHumans()); ?></p>
                             </li>
                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </ul>
