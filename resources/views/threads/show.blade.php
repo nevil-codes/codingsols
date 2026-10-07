@@ -65,7 +65,7 @@
                                             <form method="POST" action="{{ route('comments.destroy', $comment) }}" onsubmit="return confirm('Delete this reply?')">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button class="text-xs text-gray-500 hover:text-red-600 dark:hover:text-red-400">Delete</button>
+                                                <button class="text-xs text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400">Delete</button>
                                             </form>
                                         @endcan
                                     </div>
@@ -109,7 +109,7 @@
                 <div class="flex items-center gap-3">
                     <x-category-icon :category="$thread->category" />
                     <div>
-                        <div class="text-xs text-gray-500">Category</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400">Category</div>
                         <a href="{{ route('categories.show', $thread->category) }}" class="font-semibold hover:text-accent-600 dark:hover:text-accent-400">{{ $thread->category->name }}</a>
                     </div>
                 </div>

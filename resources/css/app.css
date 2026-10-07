@@ -23,7 +23,7 @@
    Tailwind doesn't purge classes that only exist at runtime. */
 .hljs-comment,
 .hljs-quote {
-    @apply italic text-zinc-500;
+    @apply italic text-zinc-500 dark:text-zinc-400;
 }
 
 .hljs-keyword,

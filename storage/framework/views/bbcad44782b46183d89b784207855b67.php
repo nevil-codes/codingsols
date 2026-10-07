@@ -1,5 +1,0 @@
-<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" <?php echo e($attributes); ?>>
-    <rect width="32" height="32" rx="8" class="fill-accent-600" />
-    <path d="M12.5 10 7 16l5.5 6M19.5 10 25 16l-5.5 6" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-</svg>
-<?php /**PATH /Users/nick/codingsols/resources/views/components/application-logo.blade.php ENDPATH**/ ?>
