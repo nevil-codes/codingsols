@@ -8,6 +8,7 @@ test('contact page is displayed', function () {
 
 test('contact messages are stored', function () {
     $this->post(route('contact.store'), [
+        ...humanFormFields(),
         'name' => 'Ada',
         'email' => 'ada@example.com',
         'message' => 'Please add a Rust category.',
@@ -19,17 +20,18 @@ test('contact messages are stored', function () {
 });
 
 test('contact messages are validated', function () {
-    $this->post(route('contact.store'), ['name' => '', 'email' => 'not-an-email', 'message' => 'short'])
+    $this->post(route('contact.store'), [...humanFormFields(), 'name' => '', 'email' => 'not-an-email', 'message' => 'short'])
         ->assertSessionHasErrors(['name', 'email', 'message']);
 
     expect(ContactMessage::count())->toBe(0);
 });
 
 test('contact form is rate limited', function () {
-    foreach (range(1, 5) as $i) {
-        $this->post(route('contact.store'), ['name' => 'Bot', 'email' => 'bot@example.com', 'message' => "Message number {$i} here"]);
+    foreach (range(1, 3) as $i) {
+        $this->post(route('contact.store'), [...humanFormFields(), 'name' => 'Bot', 'email' => 'bot@example.com', 'message' => "Message number {$i} here"]);
     }
 
-    $this->post(route('contact.store'), ['name' => 'Bot', 'email' => 'bot@example.com', 'message' => 'One message too many'])
-        ->assertTooManyRequests();
+    $this->post(route('contact.store'), [...humanFormFields(), 'name' => 'Bot', 'email' => 'bot@example.com', 'message' => 'One message too many'])
+        ->assertTooManyRequests()
+        ->assertSeeText("You're going a bit fast");
 });

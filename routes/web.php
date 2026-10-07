@@ -22,7 +22,7 @@ Route::view('/about', 'about')->name('about');
 Route::get('/search', SearchController::class)->name('search');
 
 Route::get('/contact', [ContactController::class, 'create'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
+Route::post('/contact', [ContactController::class, 'store'])->middleware(['throttle:contact', 'honeypot'])->name('contact.store');
 
 Route::get('/categories/{category}', [CategoryController::class, 'show'])->name('categories.show');
 Route::get('/threads/{thread}', [ThreadController::class, 'show'])->name('threads.show');
@@ -32,19 +32,17 @@ Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
-    Route::post('/markdown/preview', MarkdownPreviewController::class)->middleware('throttle:60,1')->name('markdown.preview');
+    Route::post('/markdown/preview', MarkdownPreviewController::class)->middleware('throttle:preview')->name('markdown.preview');
 
-    Route::middleware('throttle:20,1')->group(function () {
-        Route::post('/categories/{category}/threads', [ThreadController::class, 'store'])->name('threads.store');
-        Route::post('/threads/{thread}/comments', [CommentController::class, 'store'])->name('comments.store');
-    });
+    Route::post('/categories/{category}/threads', [ThreadController::class, 'store'])->middleware('throttle:threads')->name('threads.store');
+    Route::post('/threads/{thread}/comments', [CommentController::class, 'store'])->middleware('throttle:replies')->name('comments.store');
 
-    Route::middleware('throttle:60,1')->group(function () {
+    Route::middleware('throttle:votes')->group(function () {
         Route::post('/threads/{thread}/vote', [VoteController::class, 'thread'])->name('threads.vote');
         Route::post('/comments/{comment}/vote', [VoteController::class, 'comment'])->name('comments.vote');
     });
 
-    Route::middleware('throttle:10,1')->group(function () {
+    Route::middleware('throttle:reports')->group(function () {
         Route::post('/threads/{thread}/report', [ReportController::class, 'thread'])->name('threads.report');
         Route::post('/comments/{comment}/report', [ReportController::class, 'comment'])->name('comments.report');
     });

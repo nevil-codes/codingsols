@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Middleware\BlockSpamBots;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Crypt;
 use Tests\TestCase;
 
 /*
@@ -49,4 +51,18 @@ expect()->extend('toBeOne', function () {
 function something()
 {
     // ..
+}
+
+/**
+ * The hidden spam-trap fields a real browser submits with public forms,
+ * as if the form was opened a few seconds ago.
+ *
+ * @return array<string, string>
+ */
+function humanFormFields(): array
+{
+    return [
+        BlockSpamBots::HONEYPOT_FIELD => '',
+        BlockSpamBots::TIMESTAMP_FIELD => Crypt::encryptString((string) (now()->getTimestamp() - 5)),
+    ];
 }

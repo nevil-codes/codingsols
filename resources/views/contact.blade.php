@@ -3,8 +3,9 @@
         <h1 class="text-3xl font-bold tracking-tight">Contact us</h1>
         <p class="mt-2 text-gray-600 dark:text-gray-400">Feedback, a bug report or a category you'd like to see? Send us a message.</p>
 
-        <form method="POST" action="{{ route('contact.store') }}" class="mt-8 space-y-5">
+        <form method="POST" action="{{ route('contact.store') }}" class="relative mt-8 space-y-5">
             @csrf
+            <x-honeypot />
             <div>
                 <x-input-label for="name" value="Name" />
                 <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', auth()->user()?->name)" required maxlength="255" autocomplete="name" />

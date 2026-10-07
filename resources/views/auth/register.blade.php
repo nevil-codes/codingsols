@@ -1,6 +1,7 @@
 <x-guest-layout title="Sign up">
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}" class="relative">
         @csrf
+        <x-honeypot />
 
         <!-- Name -->
         <div>
