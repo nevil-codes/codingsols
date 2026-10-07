@@ -10,6 +10,7 @@
     </x-slot>
 
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <x-sort-tabs :current="$sort" class="mb-4" />
         @if ($threads->isEmpty())
             <x-empty-state title="No questions with this tag">Questions tagged {{ $tag->name }} will show up here.</x-empty-state>
         @else

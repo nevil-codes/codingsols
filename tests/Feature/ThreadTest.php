@@ -133,3 +133,9 @@ test('search finds threads by title and body', function () {
     $this->get(route('search', ['q' => 'pointers']))
         ->assertSeeText('Unrelated');
 });
+
+test('code blocks are keyboard focusable so they can be scrolled', function () {
+    $thread = Thread::factory()->create(['body' => "```php\necho 'hi';\n```"]);
+
+    $this->get(route('threads.show', $thread))->assertSee('<pre tabindex="0"><code class="language-php">', false);
+});

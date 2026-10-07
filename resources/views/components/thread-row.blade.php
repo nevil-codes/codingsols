@@ -22,8 +22,22 @@
             <time datetime="{{ $thread->created_at->toIso8601String() }}" title="{{ $thread->created_at->toDayDateTimeString() }}">{{ $thread->created_at->diffForHumans() }}</time>
         </div>
     </div>
-    <div class="shrink-0 self-center text-center">
-        <div class="text-sm font-semibold {{ $thread->comments_count ? 'text-emerald-600 dark:text-emerald-400' : 'text-gray-500 dark:text-gray-400' }}">{{ $thread->comments_count }}</div>
-        <div class="text-xs text-gray-500 dark:text-gray-400">{{ Str::plural('reply', $thread->comments_count) }}</div>
+    <div class="flex shrink-0 gap-2 self-center text-center">
+        <div class="w-14 py-1">
+            <div class="text-sm font-semibold tabular-nums text-gray-900 dark:text-gray-100">{{ $thread->score }}</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">{{ Str::plural('vote', abs($thread->score)) }}</div>
+        </div>
+        <div @class([
+            'w-14 rounded-lg py-1',
+            'bg-emerald-700 text-white' => $thread->accepted_comment_id,
+            'ring-1 ring-inset ring-emerald-600 text-emerald-700 dark:ring-emerald-400 dark:text-emerald-300' => ! $thread->accepted_comment_id && $thread->comments_count,
+            'text-gray-500 dark:text-gray-400' => ! $thread->accepted_comment_id && ! $thread->comments_count,
+        ]) @if ($thread->accepted_comment_id) title="Has an accepted answer" @endif>
+            <div class="text-sm font-semibold tabular-nums">{{ $thread->comments_count }}</div>
+            <div class="text-xs">{{ Str::plural('reply', $thread->comments_count) }}</div>
+            @if ($thread->accepted_comment_id)
+                <span class="sr-only">, has an accepted answer</span>
+            @endif
+        </div>
     </div>
 </li>

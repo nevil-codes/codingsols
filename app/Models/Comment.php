@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasVotes;
 use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,17 @@ use Laravel\Scout\Searchable;
 class Comment extends Model
 {
     /** @use HasFactory<CommentFactory> */
-    use HasFactory, Searchable;
+    use HasFactory, HasVotes, Searchable;
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'score' => 'integer',
+        ];
+    }
 
     /**
      * @return array<string, string>

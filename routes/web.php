@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AcceptedAnswerController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ContactController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ThreadController;
+use App\Http\Controllers\VoteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -33,6 +35,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/categories/{category}/threads', [ThreadController::class, 'store'])->name('threads.store');
         Route::post('/threads/{thread}/comments', [CommentController::class, 'store'])->name('comments.store');
     });
+
+    Route::middleware('throttle:60,1')->group(function () {
+        Route::post('/threads/{thread}/vote', [VoteController::class, 'thread'])->name('threads.vote');
+        Route::post('/comments/{comment}/vote', [VoteController::class, 'comment'])->name('comments.vote');
+    });
+
+    Route::post('/threads/{thread}/accept/{comment}', [AcceptedAnswerController::class, 'store'])->name('threads.accept');
+    Route::delete('/threads/{thread}/accept', [AcceptedAnswerController::class, 'destroy'])->name('threads.unaccept');
 
     Route::get('/categories/{category}/threads/create', [ThreadController::class, 'create'])->name('threads.create');
     Route::get('/threads/{thread}/edit', [ThreadController::class, 'edit'])->name('threads.edit');

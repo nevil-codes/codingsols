@@ -22,6 +22,7 @@
 
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid gap-8 lg:grid-cols-[1fr_18rem]">
         <section aria-label="Questions">
+            <x-sort-tabs :current="$sort" class="mb-4" />
             @if ($threads->isEmpty())
                 <x-empty-state title="No questions yet">
                     Be the first to ask something about {{ $category->name }}.
