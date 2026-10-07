@@ -12,7 +12,7 @@ class HomeController extends Controller
     {
         return view('home', [
             'categories' => Category::withCount('threads')->orderBy('id')->get(),
-            'latestThreads' => Thread::with(['user', 'category'])
+            'latestThreads' => Thread::with(['user', 'category', 'tags'])
                 ->withCount('comments')
                 ->latest()
                 ->take(8)

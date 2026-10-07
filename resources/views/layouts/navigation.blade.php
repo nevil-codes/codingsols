@@ -9,6 +9,7 @@
 
                 <div class="hidden md:flex items-center gap-6">
                     <x-nav-link :href="route('home').'#categories'" :active="request()->routeIs('categories.*')">Categories</x-nav-link>
+                    <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.*')">Tags</x-nav-link>
                     <x-nav-link :href="route('about')" :active="request()->routeIs('about')">About</x-nav-link>
                     <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">Contact</x-nav-link>
                 </div>
@@ -78,6 +79,7 @@
         </div>
         <div class="pb-3 space-y-1">
             <x-responsive-nav-link :href="route('home').'#categories'" :active="request()->routeIs('categories.*')">Categories</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.*')">Tags</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">About</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">Contact</x-responsive-nav-link>
         </div>

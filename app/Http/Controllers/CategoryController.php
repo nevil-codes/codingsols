@@ -12,7 +12,7 @@ class CategoryController extends Controller
         return view('categories.show', [
             'category' => $category,
             'threads' => $category->threads()
-                ->with('user')
+                ->with(['user', 'tags'])
                 ->withCount('comments')
                 ->latest()
                 ->paginate(15),

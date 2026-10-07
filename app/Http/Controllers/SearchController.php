@@ -28,7 +28,7 @@ class SearchController extends Controller
         $threadIds = Thread::search($query)->take(self::MAX_MATCHES)->keys();
         $replyThreadIds = Comment::search($query)->take(self::MAX_MATCHES)->get()->pluck('thread_id')->unique();
 
-        $threads = Thread::with(['user', 'category'])
+        $threads = Thread::with(['user', 'category', 'tags'])
             ->withCount('comments')
             ->whereIn('id', $threadIds->merge($replyThreadIds)->unique()->all())
             ->latest()

@@ -17,3 +17,12 @@
         ])
     </div>
 </div>
+
+<div>
+    <x-input-label for="tags" value="Tags (optional)" />
+    <x-text-input id="tags" name="tags" type="text" class="mt-1 block w-full font-mono" maxlength="200" autocomplete="off"
+        :value="old('tags', isset($thread) ? $thread->tags->pluck('name')->join(', ') : '')"
+        placeholder="e.g. pandas, csv" aria-describedby="tags-help" />
+    <p id="tags-help" class="mt-1 text-xs text-gray-500 dark:text-gray-400">Up to 5 tags, separated by commas or spaces.</p>
+    <x-input-error :messages="collect([$errors->get('tags'), $errors->get('tag_names'), $errors->get('tag_names.*')])->flatten()->unique()->all()" class="mt-2" />
+</div>

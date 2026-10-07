@@ -20,6 +20,14 @@
                     @endif
                 </div>
 
+                @if ($thread->tags->isNotEmpty())
+                    <div class="mt-3 flex flex-wrap gap-2" aria-label="Tags">
+                        @foreach ($thread->tags as $tag)
+                            <x-tag :tag="$tag" />
+                        @endforeach
+                    </div>
+                @endif
+
                 <x-card class="mt-6 p-6">
                     <x-markdown :body="$thread->body" />
 
