@@ -19,7 +19,7 @@
             <x-card class="mt-4 px-5">
                 <ul class="divide-y divide-gray-200 dark:divide-gray-800">
                     @foreach ($threads as $thread)
-                        <x-thread-row :thread="$thread" />
+                        <x-thread-row :thread="$thread" :highlight="App\Search\DatabaseEngine::terms($query)" :matched-in-reply="isset($replyMatches[$thread->id])" />
                     @endforeach
                 </ul>
             </x-card>

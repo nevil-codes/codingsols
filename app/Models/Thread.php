@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 
 #[Fillable(['title', 'body'])]
 class Thread extends Model
 {
     /** @use HasFactory<ThreadFactory> */
-    use HasFactory;
+    use HasFactory, Searchable;
 
     /**
      * @return BelongsTo<Category, $this>
@@ -38,6 +39,17 @@ class Thread extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'body' => $this->body,
+        ];
     }
 
     public function excerpt(int $limit = 160): string
