@@ -13,6 +13,18 @@ use Illuminate\Support\Facades\DB;
 trait HasVotes
 {
     /**
+     * Votes have no foreign key to their target, so remove them with it.
+     */
+    public static function bootHasVotes(): void
+    {
+        // Must not return a value: a non-null return from a "deleting" listener
+        // stops the remaining listeners from running.
+        static::deleting(function (self $model): void {
+            $model->votes()->delete();
+        });
+    }
+
+    /**
      * @return MorphMany<Vote, $this>
      */
     public function votes(): MorphMany

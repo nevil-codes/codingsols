@@ -42,6 +42,9 @@
                                 <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ Auth::user()->email }}</div>
                             </div>
                             <x-dropdown-link :href="route('dashboard')">My activity</x-dropdown-link>
+                            @can('admin')
+                                <x-dropdown-link :href="route('admin.dashboard')">Admin</x-dropdown-link>
+                            @endcan
                             <x-dropdown-link :href="route('profile.edit')">Profile</x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
@@ -94,6 +97,9 @@
                 </div>
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('dashboard')">My activity</x-responsive-nav-link>
+                    @can('admin')
+                        <x-responsive-nav-link :href="route('admin.dashboard')">Admin</x-responsive-nav-link>
+                    @endcan
                     <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

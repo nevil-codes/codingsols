@@ -28,13 +28,20 @@
                     </div>
                 @endif
 
+                @if ($thread->isLocked())
+                    <div class="mt-6 flex items-start gap-3 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900 dark:border-amber-500/40 dark:bg-amber-500/10 dark:text-amber-200" role="status">
+                        <svg class="mt-0.5 h-4 w-4 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M10 1a4.5 4.5 0 0 0-4.5 4.5V9H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-.5V5.5A4.5 4.5 0 0 0 10 1Zm3 8V5.5a3 3 0 1 0-6 0V9h6Z" clip-rule="evenodd"/></svg>
+                        <p>This question is locked by a moderator. It can't receive new answers or votes.</p>
+                    </div>
+                @endif
+
                 <x-card class="mt-6 flex gap-4 p-6">
-                    <x-vote :votable="$thread" :action="route('threads.vote', $thread)" :my-vote="$myVotes['thread:'.$thread->id] ?? 0" noun="question" class="shrink-0" />
+                    <x-vote :votable="$thread" :locked="$thread->isLocked()" :action="route('threads.vote', $thread)" :my-vote="$myVotes['thread:'.$thread->id] ?? 0" noun="question" class="shrink-0" />
                     <div class="min-w-0 flex-1">
                     <x-markdown :body="$thread->body" />
 
-                    @canany(['update', 'delete'], $thread)
-                        <div class="mt-6 flex gap-2 border-t border-gray-200 pt-4 dark:border-gray-800">
+                    @auth
+                        <div class="mt-6 flex flex-wrap items-center gap-2 border-t border-gray-200 pt-4 dark:border-gray-800">
                             @can('update', $thread)
                                 <x-button :href="route('threads.edit', $thread)" variant="ghost" size="sm">Edit</x-button>
                             @endcan
@@ -45,8 +52,20 @@
                                     <x-button variant="ghost" size="sm" class="text-red-600 dark:text-red-400">Delete</x-button>
                                 </form>
                             @endcan
+                            @can('lock', $thread)
+                                <form method="POST" action="{{ $thread->isLocked() ? route('threads.unlock', $thread) : route('threads.lock', $thread) }}">
+                                    @csrf
+                                    @if ($thread->isLocked())
+                                        @method('DELETE')
+                                    @endif
+                                    <x-button variant="ghost" size="sm">{{ $thread->isLocked() ? 'Unlock' : 'Lock' }}</x-button>
+                                </form>
+                            @endcan
+                            @can('report', $thread)
+                                <div class="ml-auto"><x-report-form :action="route('threads.report', $thread)" noun="question" /></div>
+                            @endcan
                         </div>
-                    @endcanany
+                    @endauth
                     </div>
                 </x-card>
             </article>
@@ -64,7 +83,7 @@
                             @php($accepted = $comment->id === $thread->accepted_comment_id)
                             <li id="reply-{{ $comment->id }}" class="scroll-mt-20">
                                 <x-card @class(['flex gap-4 p-5', 'border-emerald-300 ring-1 ring-emerald-300 dark:border-emerald-500/50 dark:ring-emerald-500/50' => $accepted])>
-                                    <x-vote :votable="$comment" :action="route('comments.vote', $comment)" :my-vote="$myVotes['comment:'.$comment->id] ?? 0" noun="answer" class="shrink-0" />
+                                    <x-vote :votable="$comment" :locked="$thread->isLocked()" :action="route('comments.vote', $comment)" :my-vote="$myVotes['comment:'.$comment->id] ?? 0" noun="answer" class="shrink-0" />
                                     <div class="min-w-0 flex-1">
                                     @if ($accepted)
                                         <p class="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
@@ -96,6 +115,9 @@
                                                     </form>
                                                 @endif
                                             @endcan
+                                            @can('report', $comment)
+                                                <x-report-form :action="route('comments.report', $comment)" noun="answer" />
+                                            @endcan
                                             @can('delete', $comment)
                                                 <form method="POST" action="{{ route('comments.destroy', $comment) }}" onsubmit="return confirm('Delete this reply?')">
                                                     @csrf
@@ -116,7 +138,9 @@
 
             <section class="mt-10" aria-labelledby="reply-form-heading">
                 <h2 id="reply-form-heading" class="text-lg font-semibold">Your answer</h2>
-                @auth
+                @if ($thread->isLocked())
+                    <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">This question is locked, so new answers are closed.</p>
+                @elseif (auth()->check())
                     @if (auth()->user()->hasVerifiedEmail())
                         <form method="POST" action="{{ route('comments.store', $thread) }}" class="mt-4" x-data="{ tab: 'write', body: @js(old('body', '')) }">
                             @csrf
@@ -137,7 +161,7 @@
                         <a href="{{ route('register') }}" class="font-medium text-accent-600 hover:underline dark:text-accent-400">create an account</a>
                         to answer this question.
                     </x-card>
-                @endauth
+                @endif
             </section>
         </div>
 
