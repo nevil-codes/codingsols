@@ -1,8 +1,8 @@
-@props(['votable', 'action', 'myVote' => 0, 'noun' => 'post'])
+@props(['votable', 'action', 'myVote' => 0, 'noun' => 'post', 'locked' => false])
 
 @php
 $user = auth()->user();
-$canVote = $user && $user->hasVerifiedEmail() && $user->id !== $votable->user_id;
+$canVote = ! $locked && $user && $user->hasVerifiedEmail() && $user->id !== $votable->user_id;
 $button = 'flex h-9 w-9 items-center justify-center rounded-full ring-1 ring-inset transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500';
 $idle = 'text-gray-500 ring-gray-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-gray-800 dark:hover:text-white';
 $up = 'bg-accent-600 text-white ring-accent-600';
@@ -18,7 +18,7 @@ $arrowDown = '<svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-
             <input type="hidden" name="value" value="1">
             <button type="submit" class="{{ $button }} {{ $myVote === 1 ? $up : $idle }}" aria-pressed="{{ $myVote === 1 ? 'true' : 'false' }}" aria-label="Upvote this {{ $noun }}">{!! $arrowUp !!}</button>
         </form>
-    @elseif (! $user)
+    @elseif (! $user && ! $locked)
         <a href="{{ route('login') }}" class="{{ $button }} {{ $idle }}" aria-label="Log in to vote on this {{ $noun }}">{!! $arrowUp !!}</a>
     @endif
 
@@ -32,7 +32,7 @@ $arrowDown = '<svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-
             <input type="hidden" name="value" value="-1">
             <button type="submit" class="{{ $button }} {{ $myVote === -1 ? $down : $idle }}" aria-pressed="{{ $myVote === -1 ? 'true' : 'false' }}" aria-label="Downvote this {{ $noun }}">{!! $arrowDown !!}</button>
         </form>
-    @elseif (! $user)
+    @elseif (! $user && ! $locked)
         <a href="{{ route('login') }}" class="{{ $button }} {{ $idle }}" aria-label="Log in to vote on this {{ $noun }}">{!! $arrowDown !!}</a>
     @endif
 </div>

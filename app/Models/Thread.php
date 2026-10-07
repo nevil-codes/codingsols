@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasReports;
 use App\Models\Concerns\HasVotes;
 use Database\Factories\ThreadFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
@@ -19,7 +20,7 @@ use Laravel\Scout\Searchable;
 class Thread extends Model
 {
     /** @use HasFactory<ThreadFactory> */
-    use HasFactory, HasVotes, Searchable;
+    use HasFactory, HasReports, HasVotes, Searchable;
 
     public const SORTS = ['latest' => 'Latest', 'top' => 'Top', 'unanswered' => 'Unanswered'];
 
@@ -30,8 +31,26 @@ class Thread extends Model
     {
         return [
             'edited_at' => 'datetime',
+            'locked_at' => 'datetime',
             'score' => 'integer',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        // Replies are removed by the database cascade, which skips model
+        // events, so clean up their votes and reports here.
+        static::deleting(function (Thread $thread): void {
+            $replyIds = $thread->comments()->pluck('id');
+
+            Vote::where('votable_type', 'comment')->whereIn('votable_id', $replyIds)->delete();
+            Report::where('reportable_type', 'comment')->whereIn('reportable_id', $replyIds)->delete();
+        });
+    }
+
+    public function isLocked(): bool
+    {
+        return $this->locked_at !== null;
     }
 
     /**

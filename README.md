@@ -20,6 +20,7 @@ A community forum where programmers ask questions, share answers and help each o
 - **Voting and accepted answers**: upvote or downvote questions and replies, the asker marks the answer that solved it, and lists sort by Latest, Top or Unanswered
 - **Tags** on questions (up to 5), with tag pages and a tag directory
 - **Search** across questions and replies, matching every word in any order, with highlighted results
+- **Moderation**: members can report posts; admins get a reports queue, can lock threads, delete posts, manage categories and read contact messages
 - **Activity page** listing your questions and recent replies
 - **Light and dark themes** that follow your system setting, with a manual toggle
 - **Responsive and accessible**: mobile layout, keyboard navigation, skip link and visible focus states
@@ -61,6 +62,17 @@ Open http://localhost:8000. In the `local` environment, the seeder creates sampl
 - **Password:** `password`
 
 Emails (verification, password reset) are written to `storage/logs/laravel.log` by default. Set the `MAIL_*` variables in `.env` to send real mail.
+
+The demo account is an admin, so you can try the admin area at `/admin`.
+
+### Admins
+
+Give an account admin rights (or take them away) with:
+
+```bash
+php artisan app:make-admin someone@example.com
+php artisan app:make-admin someone@example.com --revoke
+```
 
 ### Using MySQL instead of SQLite
 

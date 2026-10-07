@@ -8,6 +8,7 @@ use App\Models\Vote;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 class VoteController extends Controller
@@ -32,6 +33,7 @@ class VoteController extends Controller
         ]);
 
         abort_if($votable->user_id === $request->user()->id, 403, "You can't vote on your own posts.");
+        Gate::authorize('vote', $votable instanceof Thread ? $votable : $votable->thread);
 
         $votable->vote($request->user(), (int) $validated['value']);
 

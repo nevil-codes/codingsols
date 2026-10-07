@@ -7,6 +7,7 @@ use App\Models\Thread;
 use App\Models\User;
 use App\Search\DatabaseEngine;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\EngineManager;
 
@@ -26,6 +27,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         resolve(EngineManager::class)->extend('database', fn () => new DatabaseEngine);
+
+        Gate::define('admin', fn (User $user) => $user->is_admin);
 
         // Store short, stable names instead of class names in polymorphic columns.
         Relation::enforceMorphMap([

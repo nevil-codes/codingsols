@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\ContactMessage;
 use App\Models\Tag;
+use App\Models\Thread;
 use App\Models\User;
 use App\Models\Vote;
 use Illuminate\Database\Seeder;
@@ -19,6 +21,7 @@ class DemoSeeder extends Seeder
             'name' => 'Demo User',
             'email' => 'demo@codingsols.test',
         ]);
+        $demo->forceFill(['is_admin' => true])->save();
         $others = User::factory(4)->create();
 
         $threads = [
@@ -54,5 +57,10 @@ class DemoSeeder extends Seeder
                 $thread->acceptedAnswer()->associate($comment)->save();
             }
         }
+
+        // Something for the admin area to show.
+        $reported = Thread::latest('id')->first();
+        $reported->reports()->create(['user_id' => $others[0]->id, 'reason' => 'off-topic', 'details' => 'This is more of a general question.']);
+        ContactMessage::create(['name' => 'Ada Lovelace', 'email' => 'ada@example.com', 'message' => 'Could you add a Rust category?']);
     }
 }

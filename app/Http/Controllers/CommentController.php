@@ -12,6 +12,8 @@ class CommentController extends Controller
 {
     public function store(StoreCommentRequest $request, Thread $thread): RedirectResponse
     {
+        Gate::authorize('reply', $thread);
+
         $comment = $thread->comments()->make($request->validated());
         $comment->user()->associate($request->user());
         $comment->save();
