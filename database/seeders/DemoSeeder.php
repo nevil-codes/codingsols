@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Category;
 use App\Models\Tag;
 use App\Models\User;
+use App\Models\Vote;
 use Illuminate\Database\Seeder;
 
 class DemoSeeder extends Seeder
@@ -41,6 +42,17 @@ class DemoSeeder extends Seeder
             $comment->user()->associate($others[($i + 1) % $others->count()]);
             $comment->created_at = $comment->updated_at = $thread->created_at->copy()->addMinutes(40);
             $comment->save();
+
+            // Some votes from other members, and an accepted answer on the first few.
+            foreach ($others->reject(fn (User $user) => $user->is($author))->take(3 - $i % 3) as $voter) {
+                $thread->vote($voter, Vote::UP);
+            }
+            if (! $comment->user->is($demo)) {
+                $comment->vote($demo, Vote::UP);
+            }
+            if ($i < 2) {
+                $thread->acceptedAnswer()->associate($comment)->save();
+            }
         }
     }
 }

@@ -14,7 +14,7 @@
                     <span class="font-medium text-gray-900 dark:text-gray-100">{{ $thread->user->name }}</span>
                     <span aria-hidden="true">&middot;</span>
                     <time datetime="{{ $thread->created_at->toIso8601String() }}">asked {{ $thread->created_at->diffForHumans() }}</time>
-                    @if ($thread->updated_at->gt($thread->created_at->addMinute()))
+                    @if ($thread->edited_at)
                         <span aria-hidden="true">&middot;</span>
                         <span>edited</span>
                     @endif
@@ -28,7 +28,9 @@
                     </div>
                 @endif
 
-                <x-card class="mt-6 p-6">
+                <x-card class="mt-6 flex gap-4 p-6">
+                    <x-vote :votable="$thread" :action="route('threads.vote', $thread)" :my-vote="$myVotes['thread:'.$thread->id] ?? 0" noun="question" class="shrink-0" />
+                    <div class="min-w-0 flex-1">
                     <x-markdown :body="$thread->body" />
 
                     @canany(['update', 'delete'], $thread)
@@ -45,21 +47,31 @@
                             @endcan
                         </div>
                     @endcanany
+                    </div>
                 </x-card>
             </article>
 
             <section class="mt-10" aria-labelledby="replies-heading">
                 <h2 id="replies-heading" class="text-lg font-semibold">
-                    {{ $thread->comments->count() }} {{ Str::plural('reply', $thread->comments->count()) }}
+                    {{ $comments->count() }} {{ Str::plural('reply', $comments->count()) }}
                 </h2>
 
-                @if ($thread->comments->isEmpty())
+                @if ($comments->isEmpty())
                     <x-empty-state title="No replies yet" class="mt-4">Know the answer? Help out below.</x-empty-state>
                 @else
                     <ol class="mt-4 space-y-4">
-                        @foreach ($thread->comments as $comment)
+                        @foreach ($comments as $comment)
+                            @php($accepted = $comment->id === $thread->accepted_comment_id)
                             <li id="reply-{{ $comment->id }}" class="scroll-mt-20">
-                                <x-card class="p-5">
+                                <x-card @class(['flex gap-4 p-5', 'border-emerald-300 ring-1 ring-emerald-300 dark:border-emerald-500/50 dark:ring-emerald-500/50' => $accepted])>
+                                    <x-vote :votable="$comment" :action="route('comments.vote', $comment)" :my-vote="$myVotes['comment:'.$comment->id] ?? 0" noun="answer" class="shrink-0" />
+                                    <div class="min-w-0 flex-1">
+                                    @if ($accepted)
+                                        <p class="mb-3 inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
+                                            <svg class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.7 4.15a.75.75 0 0 1 .15 1.05l-8 10.5a.75.75 0 0 1-1.13.08l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.9 3.9 7.46-9.82a.75.75 0 0 1 1.06-.15Z" clip-rule="evenodd"/></svg>
+                                            Accepted answer
+                                        </p>
+                                    @endif
                                     <div class="flex items-center justify-between gap-3">
                                         <div class="flex items-center gap-3 text-sm">
                                             <x-avatar :user="$comment->user" size="sm" />
@@ -69,15 +81,32 @@
                                             @endif
                                             <time class="text-gray-500 dark:text-gray-400" datetime="{{ $comment->created_at->toIso8601String() }}">{{ $comment->created_at->diffForHumans() }}</time>
                                         </div>
-                                        @can('delete', $comment)
-                                            <form method="POST" action="{{ route('comments.destroy', $comment) }}" onsubmit="return confirm('Delete this reply?')">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="text-xs text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400">Delete</button>
-                                            </form>
-                                        @endcan
+                                        <div class="flex items-center gap-3">
+                                            @can('acceptAnswer', $thread)
+                                                @if ($accepted)
+                                                    <form method="POST" action="{{ route('threads.unaccept', $thread) }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Unaccept</button>
+                                                    </form>
+                                                @else
+                                                    <form method="POST" action="{{ route('threads.accept', [$thread, $comment]) }}">
+                                                        @csrf
+                                                        <button class="text-xs font-medium text-emerald-700 hover:underline dark:text-emerald-300">Accept answer</button>
+                                                    </form>
+                                                @endif
+                                            @endcan
+                                            @can('delete', $comment)
+                                                <form method="POST" action="{{ route('comments.destroy', $comment) }}" onsubmit="return confirm('Delete this reply?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="text-xs text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400">Delete</button>
+                                                </form>
+                                            @endcan
+                                        </div>
                                     </div>
                                     <x-markdown :body="$comment->body" class="mt-3 prose-sm" />
+                                    </div>
                                 </x-card>
                             </li>
                         @endforeach

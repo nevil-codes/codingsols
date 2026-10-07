@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tag;
+use App\Models\Thread;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class TagController extends Controller
@@ -18,15 +20,19 @@ class TagController extends Controller
         ]);
     }
 
-    public function show(Tag $tag): View
+    public function show(Request $request, Tag $tag): View
     {
+        $sort = in_array($request->query('sort'), array_keys(Thread::SORTS), true) ? $request->query('sort') : 'latest';
+
         return view('tags.show', [
             'tag' => $tag,
+            'sort' => $sort,
             'threads' => $tag->threads()
                 ->with(['user', 'category', 'tags'])
                 ->withCount('comments')
-                ->latest()
-                ->paginate(15),
+                ->sortBy($sort)
+                ->paginate(15)
+                ->withQueryString(),
         ]);
     }
 }

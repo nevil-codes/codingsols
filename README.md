@@ -17,6 +17,7 @@ A community forum where programmers ask questions, share answers and help each o
 - **Questions and answers** written in Markdown, with a live preview and syntax-highlighted code blocks
 - **Accounts**: sign up, log in, email verification, password reset and profile settings
 - **Ownership rules**: only authors can edit or delete their questions and replies
+- **Voting and accepted answers**: upvote or downvote questions and replies, the asker marks the answer that solved it, and lists sort by Latest, Top or Unanswered
 - **Tags** on questions (up to 5), with tag pages and a tag directory
 - **Search** across questions and replies, matching every word in any order, with highlighted results
 - **Activity page** listing your questions and recent replies
