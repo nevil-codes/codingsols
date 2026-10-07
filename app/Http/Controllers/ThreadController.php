@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreThreadRequest;
 use App\Models\Category;
+use App\Models\Tag;
 use App\Models\Thread;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
@@ -18,16 +20,21 @@ class ThreadController extends Controller
 
     public function store(StoreThreadRequest $request, Category $category): RedirectResponse
     {
-        $thread = $category->threads()->make($request->validated());
-        $thread->user()->associate($request->user());
-        $thread->save();
+        $thread = DB::transaction(function () use ($request, $category) {
+            $thread = $category->threads()->make($request->threadAttributes());
+            $thread->user()->associate($request->user());
+            $thread->save();
+            $thread->tags()->sync(Tag::findOrCreateMany($request->validated('tag_names'))->modelKeys());
+
+            return $thread;
+        });
 
         return redirect()->route('threads.show', $thread)->with('flash', 'Your question has been posted.');
     }
 
     public function show(Thread $thread): View
     {
-        $thread->load(['user', 'category', 'comments' => fn ($query) => $query->with('user')->oldest()]);
+        $thread->load(['user', 'category', 'tags', 'comments' => fn ($query) => $query->with('user')->oldest()]);
 
         return view('threads.show', ['thread' => $thread]);
     }
@@ -43,7 +50,10 @@ class ThreadController extends Controller
     {
         Gate::authorize('update', $thread);
 
-        $thread->update($request->validated());
+        DB::transaction(function () use ($request, $thread) {
+            $thread->update($request->threadAttributes());
+            $thread->tags()->sync(Tag::findOrCreateMany($request->validated('tag_names'))->modelKeys());
+        });
 
         return redirect()->route('threads.show', $thread)->with('flash', 'Your question has been updated.');
     }

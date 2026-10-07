@@ -14,6 +14,9 @@
             @if ($showCategory)
                 <x-badge :href="route('categories.show', $thread->category)">{{ $thread->category->name }}</x-badge>
             @endif
+            @foreach ($thread->tags as $tag)
+                <x-tag :tag="$tag" />
+            @endforeach
             <span>{{ $thread->user->name }}</span>
             <span aria-hidden="true">&middot;</span>
             <time datetime="{{ $thread->created_at->toIso8601String() }}" title="{{ $thread->created_at->toDayDateTimeString() }}">{{ $thread->created_at->diffForHumans() }}</time>
