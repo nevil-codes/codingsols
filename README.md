@@ -24,7 +24,7 @@ A community forum where programmers ask questions, share answers and help each o
 - **Activity page** listing your questions and recent replies
 - **Light and dark themes** that follow your system setting, with a manual toggle
 - **Responsive and accessible**: mobile layout, keyboard navigation, skip link and visible focus states
-- **Secure by default**: CSRF protection, escaped output, safe Markdown (raw HTML and `javascript:` links are stripped) and rate limiting on posting and the contact form
+- **Secure by default**: CSRF protection, escaped output, safe Markdown (raw HTML and `javascript:` links are stripped), per-user rate limits on posting, voting and reporting, a honeypot and timing check against bots on sign-up and the contact form, and `nofollow ugc` on links in posts
 
 ## Tech stack
 
