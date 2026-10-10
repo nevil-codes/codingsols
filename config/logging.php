@@ -1,6 +1,7 @@
 <?php
 
 use Monolog\Handler\NullHandler;
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 use Monolog\Processor\PsrLogMessageProcessor;
@@ -109,7 +110,12 @@ return [
             'handler_with' => [
                 'stream' => 'php://stderr',
             ],
-            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'formatter' => env('LOG_STDERR_FORMATTER', LineFormatter::class),
+            'formatter_with' => [
+                // Log viewers like Vercel's truncate long entries, which can
+                // cut off the message itself; set to false to log one line.
+                'includeStacktraces' => (bool) env('LOG_STDERR_STACKTRACES', true),
+            ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
 
