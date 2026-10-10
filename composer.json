@@ -3,7 +3,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.4.1",
@@ -68,6 +71,11 @@
         ],
         "pre-package-uninstall": [
             "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "vercel": [
+            "npm ci --no-audit --no-fund",
+            "npm run build",
+            "@php -r \"if (getenv('VERCEL_ENV') !== 'production') { echo 'Not a production build: skipping migrations.'.PHP_EOL; exit(0); } passthru(PHP_BINARY.' artisan app:deploy', \\$code); exit(\\$code);\""
         ]
     },
     "extra": {
