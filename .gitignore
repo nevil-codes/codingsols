@@ -27,3 +27,6 @@ Thumbs.db
 # legacy app
 config.local.php
 .env.docker
+
+# Vercel static output
+/.vercel-static

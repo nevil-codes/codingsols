@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Notification;
 
 test('responses carry security headers', function () {
     $this->get(route('home'))
+        ->assertHeaderMissing('X-Powered-By')
         ->assertHeader('X-Content-Type-Options', 'nosniff')
         ->assertHeader('X-Frame-Options', 'SAMEORIGIN')
         ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
@@ -119,5 +120,10 @@ test('the Vercel entry point boots the app', function () {
     $config = json_decode(file_get_contents(base_path('vercel.json')), true);
     expect($config['functions'])->toHaveKey('api/index.php')
         ->and($config['env']['QUEUE_CONNECTION'])->toBe('sync')
-        ->and($config['env']['VIEW_COMPILED_PATH'])->toStartWith('/tmp');
+        ->and($config['env']['VIEW_COMPILED_PATH'])->toStartWith('/tmp')
+        // A missing database must fail the deploy, not fall back to SQLite.
+        ->and($config['env']['DB_CONNECTION'])->toBe('pgsql')
+        // Publishing public/ would serve index.php as a plain file.
+        ->and($config['outputDirectory'])->not->toBe('public')
+        ->and($config['buildCommand'])->not->toContain('index.php');
 });

@@ -14,3 +14,4 @@
 .env.docker
 Dockerfile
 docker-compose.yml
+/.vercel-static
