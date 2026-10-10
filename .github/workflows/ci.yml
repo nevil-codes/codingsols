@@ -52,3 +52,124 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+
+  tests-pgsql:
+    runs-on: ubuntu-latest
+    name: Tests (PostgreSQL)
+
+    services:
+      pgsql:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: codingsols_test
+          POSTGRES_USER: codingsols
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U codingsols -d codingsols_test"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: codingsols_test
+      DB_USERNAME: codingsols
+      DB_PASSWORD: secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, pdo_pgsql
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run tests
+        run: php artisan test
+
+  docker:
+    runs-on: ubuntu-latest
+    name: Docker image
+
+    services:
+      pgsql:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: codingsols
+          POSTGRES_USER: codingsols
+          POSTGRES_PASSWORD: secret
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U codingsols -d codingsols"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t codingsols:ci .
+
+      - name: Write runtime environment
+        run: |
+          cat > ci.env <<ENV
+          APP_KEY=base64:$(openssl rand -base64 32)
+          APP_ENV=production
+          APP_DEBUG=false
+          APP_URL=http://localhost:8080
+          DB_CONNECTION=pgsql
+          DB_HOST=127.0.0.1
+          DB_PORT=5432
+          DB_DATABASE=codingsols
+          DB_USERNAME=codingsols
+          DB_PASSWORD=secret
+          QUEUE_CONNECTION=database
+          SESSION_DRIVER=database
+          CACHE_STORE=database
+          MAIL_MAILER=log
+          ENV
+
+      - name: Start web container
+        run: docker run -d --name web --network host --env-file ci.env codingsols:ci
+
+      - name: Wait for the app to be healthy
+        run: |
+          for i in $(seq 1 60); do
+            if curl -fsS http://localhost:8080/up > /dev/null; then echo "up after ${i}s"; exit 0; fi
+            sleep 1
+          done
+          docker logs web
+          exit 1
+
+      - name: Seed categories and check pages
+        run: |
+          docker exec web php artisan db:seed --force
+          curl -fsS http://localhost:8080/ | grep -q "Ask. Answer."
+          curl -fsS http://localhost:8080/ | grep -q "Python"
+          curl -fsS http://localhost:8080/categories/python > /dev/null
+          curl -fsS http://localhost:8080/tags > /dev/null
+          curl -fsS http://localhost:8080/login > /dev/null
+          curl -fsSI http://localhost:8080/ | grep -qi "x-content-type-options: nosniff"
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:8080/admin)" = "302"
+
+      - name: Queue worker and scheduler start
+        run: |
+          docker run --rm --network host --env-file ci.env -e AUTORUN_ENABLED=false codingsols:ci \
+            php /var/www/html/artisan queue:work --stop-when-empty --tries=1
+          docker run --rm --network host --env-file ci.env -e AUTORUN_ENABLED=false codingsols:ci \
+            php /var/www/html/artisan schedule:list
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker logs web

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Scout\EngineManager;
 
@@ -30,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         resolve(EngineManager::class)->extend('database', fn () => new DatabaseEngine);
+
+        if ($this->app->isProduction()) {
+            URL::forceHttps();
+        }
 
         Gate::define('admin', fn (User $user) => $user->is_admin);
 

@@ -32,9 +32,10 @@ A community forum where programmers ask questions, share answers and help each o
 | --- | --- |
 | Backend | PHP 8.4+, Laravel 13, Breeze (auth) |
 | Frontend | Blade, Tailwind CSS, Alpine.js, highlight.js |
-| Database | SQLite by default; MySQL / MariaDB / PostgreSQL supported |
+| Database | SQLite locally, PostgreSQL in production (tested in CI on both) |
 | Testing | Pest, Laravel Pint |
-| CI | GitHub Actions |
+| CI | GitHub Actions: Pint, tests on SQLite and PostgreSQL, Docker image smoke test |
+| Deployment | Docker (Nginx + PHP-FPM), queue worker, scheduler |
 
 ## Getting started
 
@@ -92,6 +93,10 @@ Then run `php artisan migrate --seed`.
 ### Search
 
 Search runs on [Laravel Scout](https://laravel.com/docs/scout). By default it uses the database driver (`SCOUT_DRIVER=database`), which needs no extra services and matches every word of the query in titles, bodies and replies. For typo tolerance and relevance ranking on a larger site, switch to [Meilisearch](https://www.meilisearch.com) or [Typesense](https://typesense.org): install the client package, set `SCOUT_DRIVER`, then run `php artisan scout:import "App\Models\Thread"` and `php artisan scout:import "App\Models\Comment"`.
+
+## Deployment
+
+Codingsols ships as a Docker image that runs on any container host, with PostgreSQL, Resend for email and optional Cloudflare Turnstile. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup, platform guides, backups and troubleshooting.
 
 ## Running tests
 

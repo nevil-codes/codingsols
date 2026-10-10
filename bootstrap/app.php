@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\BlockSpamBots;
+use App\Http\Middleware\SecurityHeaders;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -16,6 +17,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'honeypot' => BlockSpamBots::class,
         ]);
+
+        // Hosting platforms terminate HTTPS at their proxy; trust its
+        // X-Forwarded-* headers so the app knows requests were secure.
+        $middleware->trustProxies(at: '*');
+
+        $middleware->append(SecurityHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
