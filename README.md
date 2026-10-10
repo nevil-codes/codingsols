@@ -35,7 +35,7 @@ A community forum where programmers ask questions, share answers and help each o
 | Database | SQLite locally, PostgreSQL in production (tested in CI on both) |
 | Testing | Pest, Laravel Pint |
 | CI | GitHub Actions: Pint, tests on SQLite and PostgreSQL, Docker image smoke test |
-| Deployment | Docker (Nginx + PHP-FPM), queue worker, scheduler |
+| Deployment | Vercel (serverless PHP) or Docker (Nginx + PHP-FPM, queue worker, scheduler) |
 
 ## Getting started
 
@@ -96,7 +96,7 @@ Search runs on [Laravel Scout](https://laravel.com/docs/scout). By default it us
 
 ## Deployment
 
-Codingsols ships as a Docker image that runs on any container host, with PostgreSQL, Resend for email and optional Cloudflare Turnstile. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup, platform guides, backups and troubleshooting.
+Codingsols can be deployed to **Vercel** (serverless) or as a **Docker** image on any container host. Both use PostgreSQL, Resend for email and optional Cloudflare Turnstile. See [DEPLOYMENT.md](DEPLOYMENT.md) for setup, platform guides, backups and troubleshooting.
 
 ## Running tests
 

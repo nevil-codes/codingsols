@@ -9,9 +9,16 @@ class CategorySeeder extends Seeder
 {
     /**
      * Seed the forum categories carried over from the original app.
+     *
+     * Only runs on an empty table, so it's safe to run on every deploy
+     * without undoing categories an admin has edited.
      */
     public function run(): void
     {
+        if (Category::exists()) {
+            return;
+        }
+
         $categories = [
             ['C++', 'cpp', 'cplusplus', 'C++ is a high-level, general-purpose programming language created by Bjarne Stroustrup as an extension of the C programming language, or "C with Classes".'],
             ['Flask', 'flask', 'flask', 'Flask is a micro web framework written in Python. It does not require particular tools or libraries and leaves database, form validation and similar components to third-party extensions.'],
@@ -24,10 +31,7 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as [$name, $slug, $icon, $description]) {
-            Category::updateOrCreate(
-                ['slug' => $slug],
-                ['name' => $name, 'icon' => $icon, 'description' => $description],
-            );
+            Category::create(['slug' => $slug, 'name' => $name, 'icon' => $icon, 'description' => $description]);
         }
     }
 }

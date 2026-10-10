@@ -1,0 +1,17 @@
+/.git
+/.github
+/node_modules
+/vendor
+/legacy
+/docs
+/tests
+/public/build
+/public/hot
+/storage/logs/*
+/storage/framework/views/*
+/database/*.sqlite
+.env
+.env.docker
+Dockerfile
+docker-compose.yml
+/.vercel-static

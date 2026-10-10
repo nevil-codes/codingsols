@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\BlockSpamBots;
+use App\Models\Category;
 use App\Models\ContactMessage;
 use App\Models\User;
 use App\Notifications\QueuedResetPassword;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Notification;
 
 test('responses carry security headers', function () {
     $this->get(route('home'))
+        ->assertHeaderMissing('X-Powered-By')
         ->assertHeader('X-Content-Type-Options', 'nosniff')
         ->assertHeader('X-Frame-Options', 'SAMEORIGIN')
         ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
@@ -99,4 +101,29 @@ describe('Cloudflare Turnstile', function () {
 
         expect(ContactMessage::count())->toBe(1);
     });
+});
+
+test('app:deploy migrates and seeds categories only once', function () {
+    $this->artisan('app:deploy')->assertSuccessful();
+    expect(Category::count())->toBe(8);
+
+    Category::where('slug', 'python')->update(['name' => 'Python 3']);
+    $this->artisan('app:deploy')->assertSuccessful();
+
+    expect(Category::count())->toBe(8)
+        ->and(Category::where('slug', 'python')->value('name'))->toBe('Python 3');
+});
+
+test('the Vercel entry point boots the app', function () {
+    expect(file_get_contents(base_path('api/index.php')))->toContain("require __DIR__.'/../public/index.php'");
+
+    $config = json_decode(file_get_contents(base_path('vercel.json')), true);
+    expect($config['functions'])->toHaveKey('api/index.php')
+        ->and($config['env']['QUEUE_CONNECTION'])->toBe('sync')
+        ->and($config['env']['VIEW_COMPILED_PATH'])->toStartWith('/tmp')
+        // A missing database must fail the deploy, not fall back to SQLite.
+        ->and($config['env']['DB_CONNECTION'])->toBe('pgsql')
+        // Publishing public/ would serve index.php as a plain file.
+        ->and($config['outputDirectory'])->not->toBe('public')
+        ->and($config['buildCommand'])->not->toContain('index.php');
 });
