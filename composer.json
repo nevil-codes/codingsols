@@ -75,7 +75,7 @@
         "vercel": [
             "npm ci --no-audit --no-fund",
             "npm run build",
-            "@php -r \"if (getenv('VERCEL_ENV') !== 'production') { echo 'Not a production build: skipping migrations.'.PHP_EOL; exit(0); } passthru(PHP_BINARY.' artisan app:deploy', \\$code); exit(\\$code);\""
+            "@php -r \"if (getenv('VERCEL_ENV') !== 'production') { echo 'Not a production build: skipping migrations.'.PHP_EOL; exit(0); } passthru('DB_CONNECTION=pgsql '.escapeshellarg(PHP_BINARY).' artisan app:deploy', \\$code); exit(\\$code);\""
         ]
     },
     "extra": {
