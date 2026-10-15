@@ -32,7 +32,7 @@ test('the health check responds', function () {
 test('verification and password reset emails go through the queue', function () {
     Notification::fake();
 
-    $this->post('/register', [...humanFormFields(), 'name' => 'Ada', 'email' => 'ada@example.com', 'password' => 'password', 'password_confirmation' => 'password']);
+    $this->post('/register', [...humanFormFields(), 'name' => 'Ada', 'email' => 'ada@example.com', 'password' => 'password', 'password_confirmation' => 'password', 'terms' => '1']);
     Notification::assertSentTo(User::sole(), QueuedVerifyEmail::class);
 
     expect(new QueuedVerifyEmail)->toBeInstanceOf(ShouldQueue::class)

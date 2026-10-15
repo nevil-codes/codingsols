@@ -42,6 +42,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
             'is_admin' => 'boolean',
             'notify_replies' => 'boolean',
+            'terms_accepted_at' => 'datetime',
         ];
     }
 

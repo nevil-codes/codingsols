@@ -2,6 +2,10 @@
     <url><loc>{{ route('home') }}</loc></url>
     <url><loc>{{ route('tags.index') }}</loc></url>
     <url><loc>{{ route('about') }}</loc></url>
+    <url><loc>{{ route('legal.privacy') }}</loc></url>
+    <url><loc>{{ route('legal.privacy.de') }}</loc></url>
+    <url><loc>{{ route('legal.terms') }}</loc></url>
+    <url><loc>{{ route('legal.terms.de') }}</loc></url>
 @foreach ($categories as $category)
     <url><loc>{{ route('categories.show', $category) }}</loc></url>
 @endforeach

@@ -21,6 +21,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/about', 'about')->name('about');
+
+Route::view('/privacy', 'legal.privacy-en')->name('legal.privacy');
+Route::view('/datenschutz', 'legal.privacy-de')->name('legal.privacy.de');
+Route::view('/terms', 'legal.terms-en')->name('legal.terms');
+Route::view('/nutzungsbedingungen', 'legal.terms-de')->name('legal.terms.de');
 Route::get('/search', SearchController::class)->middleware('throttle:search')->name('search');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');

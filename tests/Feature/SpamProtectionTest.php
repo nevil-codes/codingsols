@@ -48,6 +48,7 @@ test('bot registrations are blocked', function () {
         'email' => 'bot@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'terms' => '1',
     ])->assertSessionHasErrors('form');
 
     expect(User::count())->toBe(0);
@@ -56,11 +57,11 @@ test('bot registrations are blocked', function () {
 
 test('registration is limited per IP address', function () {
     foreach (range(1, 5) as $i) {
-        $this->post('/register', [...humanFormFields(), 'name' => "User {$i}", 'email' => "user{$i}@example.com", 'password' => 'password', 'password_confirmation' => 'password']);
+        $this->post('/register', [...humanFormFields(), 'name' => "User {$i}", 'email' => "user{$i}@example.com", 'password' => 'password', 'password_confirmation' => 'password', 'terms' => '1']);
         auth()->logout();
     }
 
-    $this->post('/register', [...humanFormFields(), 'name' => 'User 6', 'email' => 'user6@example.com', 'password' => 'password', 'password_confirmation' => 'password'])
+    $this->post('/register', [...humanFormFields(), 'name' => 'User 6', 'email' => 'user6@example.com', 'password' => 'password', 'password_confirmation' => 'password', 'terms' => '1'])
         ->assertTooManyRequests();
 });
 
