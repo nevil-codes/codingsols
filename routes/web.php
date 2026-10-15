@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::view('/about', 'about')->name('about');
-Route::get('/search', SearchController::class)->name('search');
+Route::get('/search', SearchController::class)->middleware('throttle:search')->name('search');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
