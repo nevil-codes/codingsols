@@ -127,3 +127,13 @@ test('the Vercel entry point boots the app', function () {
         ->and($config['outputDirectory'])->not->toBe('public')
         ->and($config['buildCommand'])->not->toContain('index.php');
 });
+
+test('tailwind only scans files that exist in every build step', function () {
+    // On Vercel the front end is built twice (static files, then inside the PHP
+    // function). vendor/ and storage/ differ between those steps, which gives
+    // the CSS a different hash in each build and breaks the stylesheet link.
+    $config = file_get_contents(base_path('tailwind.config.js'));
+    preg_match('/content:\s*\[(.*?)\]/s', $config, $content);
+
+    expect($content[1])->not->toContain("'./vendor")->not->toContain("'./storage");
+});
