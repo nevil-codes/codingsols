@@ -1,4 +1,4 @@
-<x-app-layout title="Tags">
+<x-app-layout title="Tags" description="Browse programming questions on Codingsols by tag.">
     <x-slot name="header">
         <h1 class="text-2xl font-bold tracking-tight">Tags</h1>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">Topics people are asking about across all categories.</p>

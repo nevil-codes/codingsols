@@ -1,4 +1,4 @@
-<x-app-layout :title="$thread->title">
+<x-app-layout :title="$thread->title" :description="$thread->excerpt()">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 grid gap-8 lg:grid-cols-[1fr_18rem]">
         <div class="min-w-0">
             <nav class="text-sm text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">

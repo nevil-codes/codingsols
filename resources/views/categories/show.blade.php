@@ -1,4 +1,4 @@
-<x-app-layout :title="$category->name">
+<x-app-layout :title="$category->name" :description="$category->name.' questions and answers on Codingsols. '.Str::limit($category->description, 100)">
     <x-slot name="header">
         <nav class="text-sm text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">
             <a href="{{ route('home') }}#categories" class="hover:text-gray-900 dark:hover:text-white">Categories</a>

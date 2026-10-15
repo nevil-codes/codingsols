@@ -1,4 +1,4 @@
-<x-app-layout :title="'#'.$tag->name">
+<x-app-layout :title="'#'.$tag->name" :description="'Programming questions tagged '.$tag->name.' on Codingsols.'">
     <x-slot name="header">
         <nav class="text-sm text-gray-500 dark:text-gray-400" aria-label="Breadcrumb">
             <a href="{{ route('tags.index') }}" class="hover:text-gray-900 dark:hover:text-white">Tags</a>
