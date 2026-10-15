@@ -8,8 +8,8 @@ export default {
     darkMode: 'class',
 
     content: [
-        './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-        './storage/framework/views/*.php',
+        // Only scan files in the repo: vendor/ and storage/ differ between build
+        // steps, which would give the CSS a different hash in each build.
         './resources/views/**/*.blade.php',
         './resources/js/**/*.js',
     ],
