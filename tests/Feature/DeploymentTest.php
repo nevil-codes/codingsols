@@ -137,3 +137,12 @@ test('tailwind only scans files that exist in every build step', function () {
 
     expect($content[1])->not->toContain("'./vendor")->not->toContain("'./storage");
 });
+
+test('errors are only sent to Sentry when a DSN is configured', function () {
+    expect(config('sentry.dsn'))->toBeEmpty()
+        ->and(config('sentry.send_default_pii'))->toBeFalse();
+
+    // Reporting an exception without a DSN must not fail.
+    report(new RuntimeException('Nothing should be sent'));
+    $this->get(route('home'))->assertOk();
+});
