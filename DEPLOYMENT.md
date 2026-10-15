@@ -56,6 +56,16 @@ Or, from your machine with the production database URL:
 DB_URL="postgresql://…" php artisan app:make-admin you@example.com
 ```
 
+### 5. Add starter questions (optional)
+
+A brand-new forum looks empty. To add ten common questions with answers across the categories, posted by a "Codingsols Team" account, run this once from your machine with the production database URL:
+
+```bash
+DB_CONNECTION=pgsql DB_URL="postgresql://…" php artisan db:seed --class=StarterContentSeeder --force
+```
+
+It only runs when there are no questions yet, so it never duplicates or mixes with real posts. Edit or delete the starter questions from the admin area like any others.
+
 ### Limitations on Vercel
 
 - **Emails are sent during the request** (`QUEUE_CONNECTION=sync`), so registering takes a moment longer. If Resend is down, the request shows an error.
@@ -108,7 +118,7 @@ Copy the list from [`.env.production.example`](.env.production.example) into you
    php artisan app:make-admin you@example.com       # after you've registered on the site
    ```
 
-   In production the seeder only creates categories; demo users and questions are local-only.
+   In production the seeder only creates categories; demo users and questions are local-only. To add a few starter questions to an empty forum, also run `php artisan db:seed --class=StarterContentSeeder --force`.
 
 5. Visit `/up`. It returns `200` when the app is running.
 
