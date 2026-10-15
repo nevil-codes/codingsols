@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCommentRequest;
 use App\Models\Comment;
 use App\Models\Thread;
+use App\Notifications\NewReply;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,6 +18,10 @@ class CommentController extends Controller
         $comment = $thread->comments()->make($request->validated());
         $comment->user()->associate($request->user());
         $comment->save();
+
+        if (! $thread->user->is($request->user())) {
+            $thread->user->notify(new NewReply($comment->setRelation('thread', $thread)));
+        }
 
         return redirect()
             ->to(route('threads.show', $thread).'#reply-'.$comment->id)

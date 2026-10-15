@@ -8,6 +8,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MarkdownPreviewController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
@@ -25,7 +26,7 @@ Route::view('/privacy', 'legal.privacy-en')->name('legal.privacy');
 Route::view('/datenschutz', 'legal.privacy-de')->name('legal.privacy.de');
 Route::view('/terms', 'legal.terms-en')->name('legal.terms');
 Route::view('/nutzungsbedingungen', 'legal.terms-de')->name('legal.terms.de');
-Route::get('/search', SearchController::class)->name('search');
+Route::get('/search', SearchController::class)->middleware('throttle:search')->name('search');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [SitemapController::class, 'robots'])->name('robots');
 
@@ -39,6 +40,7 @@ Route::get('/tags/{tag}', [TagController::class, 'show'])->name('tags.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
 
     Route::post('/markdown/preview', MarkdownPreviewController::class)->middleware('throttle:preview')->name('markdown.preview');
 
@@ -81,6 +83,7 @@ Route::middleware(['auth', 'verified', 'can:admin'])->prefix('admin')->name('adm
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/notifications', [ProfileController::class, 'updateNotifications'])->name('profile.notifications');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
