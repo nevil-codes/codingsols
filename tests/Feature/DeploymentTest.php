@@ -155,3 +155,7 @@ test('errors are only sent to Sentry when a DSN is configured', function () {
     report(new RuntimeException('Nothing should be sent'));
     $this->get(route('home'))->assertOk();
 });
+
+test('PostgreSQL connections avoid server-side prepared statements for pooler compatibility', function () {
+    expect(config('database.connections.pgsql.options'))->toBe([PDO::ATTR_EMULATE_PREPARES => true]);
+});
