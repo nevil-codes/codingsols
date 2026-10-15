@@ -126,6 +126,15 @@ test('the Vercel entry point boots the app', function () {
         // Publishing public/ would serve index.php as a plain file.
         ->and($config['outputDirectory'])->not->toBe('public')
         ->and($config['buildCommand'])->not->toContain('index.php');
+
+    // Every static file in public/ must be copied to the Vercel output.
+    $static = collect(glob(public_path('*')))
+        ->map(fn ($path) => basename($path))
+        ->reject(fn ($file) => in_array($file, ['index.php', 'hot', 'storage', '.htaccess']));
+
+    foreach ($static as $file) {
+        expect($config['buildCommand'])->toContain("public/{$file}");
+    }
 });
 
 test('tailwind only scans files that exist in every build step', function () {
