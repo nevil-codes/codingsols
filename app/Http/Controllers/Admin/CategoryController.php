@@ -28,7 +28,7 @@ class CategoryController extends Controller
     {
         Category::create($this->validated($request));
 
-        return redirect()->route('admin.categories.index')->with('flash', 'Category created.');
+        return redirect()->route('admin.categories.index')->with('flash', __('Category created.'));
     }
 
     public function edit(Category $category): View
@@ -40,7 +40,7 @@ class CategoryController extends Controller
     {
         $category->update($this->validated($request, $category));
 
-        return redirect()->route('admin.categories.index')->with('flash', 'Category updated.');
+        return redirect()->route('admin.categories.index')->with('flash', __('Category updated.'));
     }
 
     public function destroy(Category $category): RedirectResponse
@@ -48,12 +48,12 @@ class CategoryController extends Controller
         // Deleting would cascade to every question in it, so require it to be empty.
         if ($category->threads()->exists()) {
             return redirect()->route('admin.categories.index')
-                ->with('flash', "\"{$category->name}\" still has questions, so it can't be deleted.");
+                ->with('flash', __('":category" still has questions, so it can\'t be deleted.', ['category' => $category->name]));
         }
 
         $category->delete();
 
-        return redirect()->route('admin.categories.index')->with('flash', 'Category deleted.');
+        return redirect()->route('admin.categories.index')->with('flash', __('Category deleted.'));
     }
 
     /**

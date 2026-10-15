@@ -32,6 +32,11 @@ return [
     'database_location' => [
         'en' => env('LEGAL_DATABASE_LOCATION_EN', 'the USA (Amazon Web Services, us-east-1)'),
         'de' => env('LEGAL_DATABASE_LOCATION_DE', 'den USA (Amazon Web Services, us-east-1)'),
+        'fr' => env('LEGAL_DATABASE_LOCATION_FR', 'aux États-Unis (Amazon Web Services, us-east-1)'),
+        'nl' => env('LEGAL_DATABASE_LOCATION_NL', 'de Verenigde Staten (Amazon Web Services, us-east-1)'),
+        'es' => env('LEGAL_DATABASE_LOCATION_ES', 'Estados Unidos (Amazon Web Services, us-east-1)'),
+        'it' => env('LEGAL_DATABASE_LOCATION_IT', 'negli Stati Uniti (Amazon Web Services, us-east-1)'),
+        'pt' => env('LEGAL_DATABASE_LOCATION_PT', 'nos Estados Unidos (Amazon Web Services, us-east-1)'),
     ],
 
     /*

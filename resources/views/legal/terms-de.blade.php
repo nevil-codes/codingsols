@@ -1,6 +1,6 @@
 @php($lang = 'de')
-<x-legal-page lang="de" title="Nutzungsbedingungen" :updated="config('legal.terms_version')" :other="route('legal.terms')">
-    <p>Diese Nutzungsbedingungen gelten für die Nutzung von Codingsols, einem kostenlosen Frage-und-Antwort-Forum für Programmiererinnen und Programmierer. Mit der Registrierung erklärst du dich mit ihnen einverstanden. Wie wir mit personenbezogenen Daten umgehen, erklären wir gesondert in unserer <a href="{{ route('legal.privacy.de') }}">Datenschutzerklärung</a>.</p>
+<x-legal-page lang="de" title="Nutzungsbedingungen" :updated="config('legal.terms_version')">
+    <p>Diese Nutzungsbedingungen gelten für die Nutzung von Codingsols, einem kostenlosen Frage-und-Antwort-Forum für Programmiererinnen und Programmierer. Mit der Registrierung erklärst du dich mit ihnen einverstanden. Wie wir mit personenbezogenen Daten umgehen, erklären wir gesondert in unserer <a href="{{ route('legal.privacy', ['lang' => 'de']) }}">Datenschutzerklärung</a>.</p>
 
     <h2>1. Betreiber</h2>
     @include('legal.partials.operator')

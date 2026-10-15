@@ -37,7 +37,7 @@ class BlockSpamBots
             Log::info('Blocked spam submission', ['reason' => $reason, 'ip' => $request->ip(), 'path' => $request->path()]);
 
             throw ValidationException::withMessages([
-                'form' => "We couldn't verify this submission. Please wait a moment and try again.",
+                'form' => __("We couldn't verify this submission. Please wait a moment and try again."),
             ]);
         }
 

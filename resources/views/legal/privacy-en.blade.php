@@ -1,5 +1,5 @@
 @php($lang = 'en')
-<x-legal-page lang="en" title="Privacy Policy" :updated="config('legal.privacy_updated')" :other="route('legal.privacy.de')">
+<x-legal-page lang="en" title="Privacy Policy" :updated="config('legal.privacy_updated')">
     <p>This policy explains what personal data Codingsols collects, why, and what rights you have under the EU General Data Protection Regulation (GDPR). Codingsols has no advertising, no analytics and no tracking cookies.</p>
 
     <h2>1. Who is responsible</h2>
@@ -16,12 +16,13 @@
     <ul>
         <li><strong><code>codingsols-session</code></strong>: keeps you logged in and remembers form input between pages. Expires after 2 hours of inactivity, or when you log out.</li>
         <li><strong><code>XSRF-TOKEN</code></strong>: protects forms against cross-site request forgery. Expires after 2 hours.</li>
+        <li><strong><code>locale</code></strong>: remembers the language you picked in the language menu. Only set when you pick one; expires after 1 year.</li>
         <li><strong><code>theme</code></strong> (local storage in your browser): remembers whether you chose light or dark mode. It never leaves your device.</li>
     </ul>
     <p>Because these are strictly necessary for a service you requested, no consent is required (§ 25(2) no. 2 TDDDG). The session data stored on our server includes your IP address and user agent, so we can protect your account; it is deleted when the session expires.</p>
 
     <h2>4. Your account</h2>
-    <p>When you sign up we store your <strong>name, email address and password</strong> (only as a secure hash, never in readable form), and the date you accepted the <a href="{{ route('legal.terms') }}">Terms of Use</a>. We use your email address to verify your account, reset your password and, if you want, tell you about replies to your questions.</p>
+    <p>When you sign up we store your <strong>name, email address and password</strong> (only as a secure hash, never in readable form), and the date you accepted the <a href="{{ route('legal.terms', ['lang' => 'en']) }}">Terms of Use</a>. We use your email address to verify your account, reset your password and, if you want, tell you about replies to your questions.</p>
     <p><strong>Legal basis:</strong> Art. 6(1)(b) GDPR (providing the service you signed up for).</p>
     <p><strong>Storage period:</strong> until you delete your account. You can do this yourself at any time in your profile settings.</p>
 

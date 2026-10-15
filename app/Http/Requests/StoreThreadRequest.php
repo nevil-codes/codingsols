@@ -38,8 +38,8 @@ class StoreThreadRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'tag_names.max' => 'Use at most :max tags.',
-            'tag_names.*.regex' => 'Tags can only use lowercase letters, numbers and . + # - (max 30 characters).',
+            'tag_names.max' => __('Use at most :max tags.'),
+            'tag_names.*.regex' => __('Tags can only use lowercase letters, numbers and . + # - (max 30 characters).'),
         ];
     }
 

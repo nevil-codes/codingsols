@@ -25,7 +25,7 @@ class CommentController extends Controller
 
         return redirect()
             ->to(route('threads.show', $thread).'#reply-'.$comment->id)
-            ->with('flash', 'Your reply has been posted.');
+            ->with('flash', __('Your reply has been posted.'));
     }
 
     public function destroy(Comment $comment): RedirectResponse
@@ -35,6 +35,6 @@ class CommentController extends Controller
         $thread = $comment->thread;
         $comment->delete();
 
-        return redirect()->route('threads.show', $thread)->with('flash', 'Your reply has been deleted.');
+        return redirect()->route('threads.show', $thread)->with('flash', __('Your reply has been deleted.'));
     }
 }

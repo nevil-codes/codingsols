@@ -14,7 +14,7 @@ class ThreadLockController extends Controller
 
         $thread->forceFill(['locked_at' => now()])->save();
 
-        return redirect()->route('threads.show', $thread)->with('flash', 'Thread locked. No new replies or votes.');
+        return redirect()->route('threads.show', $thread)->with('flash', __('Thread locked. No new replies or votes.'));
     }
 
     public function destroy(Thread $thread): RedirectResponse
@@ -23,6 +23,6 @@ class ThreadLockController extends Controller
 
         $thread->forceFill(['locked_at' => null])->save();
 
-        return redirect()->route('threads.show', $thread)->with('flash', 'Thread unlocked.');
+        return redirect()->route('threads.show', $thread)->with('flash', __('Thread unlocked.'));
     }
 }

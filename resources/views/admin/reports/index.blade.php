@@ -1,6 +1,6 @@
-<x-admin-layout title="Reports">
+<x-admin-layout title="{{ __('Reports') }}">
     @if ($groups->isEmpty())
-        <x-empty-state title="No open reports">Reported questions and answers will show up here.</x-empty-state>
+        <x-empty-state title="{{ __('No open reports') }}">{{ __('Reported questions and answers will show up here.') }}</x-empty-state>
     @else
         <ul class="space-y-4">
             @foreach ($groups as $reports)
@@ -12,7 +12,7 @@
                             <div class="min-w-0">
                                 <p class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
                                     {{ $first->reportable_type === 'thread' ? 'Question' : 'Answer' }}
-                                    &middot; {{ $reports->count() }} {{ Str::plural('report', $reports->count()) }}
+                                    &middot; {{ trans_choice(':count report|:count reports', $reports->count()) }}
                                 </p>
                                 @if ($post)
                                     @php($thread = $post instanceof App\Models\Thread ? $post : $post->thread)
@@ -21,20 +21,20 @@
                                     <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">{{ Str::limit(strip_tags(App\Support\Markdown::render($post->body)), 200) }}</p>
                                     <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">by {{ $post->user->name }}</p>
                                 @else
-                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">This content no longer exists.</p>
+                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('This content no longer exists.') }}</p>
                                 @endif
                             </div>
                             <div class="flex flex-wrap gap-2">
                                 <form method="POST" action="{{ route('admin.reports.dismiss', $first) }}">
                                     @csrf
-                                    <x-button variant="secondary" size="sm">Dismiss</x-button>
+                                    <x-button variant="secondary" size="sm">{{ __('Dismiss') }}</x-button>
                                 </form>
                                 @if ($post)
                                     @php($thread = $post instanceof App\Models\Thread ? $post : $post->thread)
                                     @unless ($thread->isLocked())
                                         <form method="POST" action="{{ route('threads.lock', $thread) }}">
                                             @csrf
-                                            <x-button variant="secondary" size="sm">Lock thread</x-button>
+                                            <x-button variant="secondary" size="sm">{{ __('Lock thread') }}</x-button>
                                         </form>
                                     @endunless
                                     <form method="POST" action="{{ route('admin.reports.remove', $first) }}" onsubmit="return confirm('Delete this {{ $first->reportable_type === 'thread' ? 'question and all its answers' : 'answer' }}?')">
@@ -48,8 +48,8 @@
                         <ul class="mt-4 space-y-2 border-t border-gray-200 pt-4 text-sm dark:border-gray-800">
                             @foreach ($reports as $report)
                                 <li>
-                                    <x-badge>{{ App\Models\Report::REASONS[$report->reason] ?? $report->reason }}</x-badge>
-                                    <span class="text-gray-600 dark:text-gray-400">from {{ $report->user->name }}, {{ $report->created_at->diffForHumans() }}</span>
+                                    <x-badge>{{ __(App\Models\Report::REASONS[$report->reason] ?? $report->reason) }}</x-badge>
+                                    <span class="text-gray-600 dark:text-gray-400">{{ __('from :name, :time', ['name' => $report->user->name, 'time' => $report->created_at->diffForHumans()]) }}</span>
                                     @if ($report->details)
                                         <p class="mt-1 text-gray-700 dark:text-gray-300">“{{ $report->details }}”</p>
                                     @endif

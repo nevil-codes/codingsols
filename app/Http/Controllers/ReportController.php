@@ -41,6 +41,6 @@ class ReportController extends Controller
             [...$validated, 'resolved_at' => null],
         );
 
-        return redirect()->to($redirectTo)->with('flash', 'Thanks for the report. A moderator will take a look.');
+        return redirect()->to($redirectTo)->with('flash', __('Thanks for the report. A moderator will take a look.'));
     }
 }

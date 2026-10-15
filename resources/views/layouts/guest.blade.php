@@ -20,9 +20,10 @@
                 {{ $slot }}
             </main>
 
-            <footer class="mt-6 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
-                <a href="{{ \App\Support\LegalLocale::url('privacy') }}" class="hover:text-gray-900 dark:hover:text-white">{{ \App\Support\LegalLocale::label('privacy') }}</a>
-                <a href="{{ \App\Support\LegalLocale::url('terms') }}" class="hover:text-gray-900 dark:hover:text-white">{{ \App\Support\LegalLocale::label('terms') }}</a>
+            <footer class="mt-6 flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+                <a href="{{ route('legal.privacy') }}" class="hover:text-gray-900 dark:hover:text-white">{{ __('Privacy') }}</a>
+                <a href="{{ route('legal.terms') }}" class="hover:text-gray-900 dark:hover:text-white">{{ __('Terms') }}</a>
+                <x-language-switcher compact id="guest" />
                 <div x-data="themeToggle"><x-theme-toggle /></div>
             </footer>
         </div>

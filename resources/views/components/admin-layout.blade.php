@@ -1,10 +1,10 @@
 @props(['title'])
 
-<x-app-layout :title="$title.' · Admin'">
+<x-app-layout :title="$title.' · '.__('Admin')">
     <x-slot name="header">
-        <p class="text-sm font-semibold text-accent-600 dark:text-accent-400">Admin</p>
+        <p class="text-sm font-semibold text-accent-600 dark:text-accent-400">{{ __('Admin') }}</p>
         <h1 class="mt-1 text-2xl font-bold tracking-tight">{{ $title }}</h1>
-        <nav class="mt-4 flex flex-wrap gap-1" aria-label="Admin">
+        <nav class="mt-4 flex flex-wrap gap-1" aria-label="{{ __('Admin') }}">
             @foreach ([
                 'admin.dashboard' => 'Overview',
                 'admin.reports.index' => 'Reports',
@@ -16,7 +16,7 @@
                     'rounded-md px-3 py-1.5 text-sm font-medium',
                     'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-white' => $active,
                     'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white' => ! $active,
-                ]) @if ($active) aria-current="page" @endif>{{ $label }}</a>
+                ]) @if ($active) aria-current="page" @endif>{{ __($label) }}</a>
             @endforeach
         </nav>
     </x-slot>

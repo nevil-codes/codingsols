@@ -5,7 +5,7 @@
     </head>
     <body class="font-sans antialiased bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100">
         <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:rounded-md focus:bg-accent-600 focus:px-3 focus:py-2 focus:text-white">
-            Skip to content
+            {{ __('Skip to content') }}
         </a>
 
         <div class="min-h-screen flex flex-col">

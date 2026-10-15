@@ -1,6 +1,6 @@
-<x-admin-layout title="Messages">
+<x-admin-layout title="{{ __('Messages') }}">
     @if ($messages->isEmpty())
-        <x-empty-state title="No messages">Messages sent through the contact form will show up here.</x-empty-state>
+        <x-empty-state title="{{ __('No messages') }}">{{ __('Messages sent through the contact form will show up here.') }}</x-empty-state>
     @else
         <ul class="space-y-4">
             @foreach ($messages as $message)
@@ -15,7 +15,7 @@
                             <form method="POST" action="{{ route('admin.messages.destroy', $message) }}" onsubmit="return confirm('Delete this message?')">
                                 @csrf
                                 @method('DELETE')
-                                <x-button variant="ghost" size="sm" class="text-red-600 dark:text-red-400">Delete</x-button>
+                                <x-button variant="ghost" size="sm" class="text-red-600 dark:text-red-400">{{ __('Delete') }}</x-button>
                             </form>
                         </div>
                         <p class="mt-3 whitespace-pre-line text-sm text-gray-700 dark:text-gray-300">{{ $message->message }}</p>
