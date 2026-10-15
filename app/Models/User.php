@@ -27,6 +27,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $attributes = [
         'is_admin' => false,
+        'notify_replies' => true,
     ];
 
     /**
@@ -40,7 +41,14 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_admin' => 'boolean',
+            'notify_replies' => 'boolean',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        // Notifications are polymorphic, so the database doesn't cascade them.
+        static::deleting(fn (User $user) => $user->notifications()->delete());
     }
 
     public function sendEmailVerificationNotification(): void

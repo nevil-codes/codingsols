@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Concerns\HasReports;
 use App\Models\Concerns\HasVotes;
+use App\Support\Markdown;
 use Database\Factories\CommentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -51,5 +52,10 @@ class Comment extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function excerpt(int $limit = 160): string
+    {
+        return Markdown::excerpt($this->body, $limit);
     }
 }
