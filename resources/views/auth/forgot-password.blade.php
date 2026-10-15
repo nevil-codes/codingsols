@@ -6,6 +6,10 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    @if (session('status'))
+        <x-spam-hint class="mb-4" />
+    @endif
+
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
 
