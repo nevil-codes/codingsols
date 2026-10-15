@@ -71,5 +71,15 @@ class AppServiceProvider extends ServiceProvider
             Limit::perDay(20)->by('contact-day:'.$request->ip()),
         ]);
         RateLimiter::for('register', fn (Request $request) => Limit::perHour(5)->by('register:'.$request->ip()));
+
+        // Each request sends an email, so limit by IP as well as the broker's per-address limit.
+        RateLimiter::for('password-email', fn (Request $request) => [
+            Limit::perMinute(3)->by('password-email:'.$request->ip()),
+            Limit::perDay(20)->by('password-email-day:'.$request->ip()),
+        ]);
+        // Endpoints that check a password or reset token: slow down guessing.
+        RateLimiter::for('password-check', fn (Request $request) => Limit::perMinute(6)->by('password-check:'.$key($request)));
+        // Search runs LIKE queries over every post.
+        RateLimiter::for('search', fn (Request $request) => Limit::perMinute(30)->by('search:'.$key($request)));
     }
 }
