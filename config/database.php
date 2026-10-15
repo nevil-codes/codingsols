@@ -98,6 +98,13 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            // Poolers like Neon's (PgBouncer) share server connections between
+            // clients, so server-side prepared statements can outlive a schema
+            // change and fail with "cached plan must not change result type".
+            // Let PDO prepare statements itself instead.
+            'options' => extension_loaded('pdo_pgsql') ? array_filter([
+                PDO::ATTR_EMULATE_PREPARES => (bool) env('DB_EMULATE_PREPARES', true),
+            ]) : [],
         ],
 
         'sqlsrv' => [
