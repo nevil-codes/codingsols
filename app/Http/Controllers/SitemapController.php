@@ -32,12 +32,15 @@ class SitemapController extends Controller
                 Carbon::parse($thread->comments_max_updated_at ?? $thread->updated_at),
             )));
 
-        return response()
-            ->view('seo.sitemap', [
-                'categories' => Category::query()->select(['id', 'slug', 'updated_at'])->orderBy('name')->get(),
-                'tags' => Tag::query()->select(['id', 'slug', 'updated_at'])->has('threads')->orderBy('slug')->get(),
-                'threads' => $threads,
-            ])
+        $urls = view('seo.sitemap', [
+            'categories' => Category::query()->select(['id', 'slug', 'updated_at'])->orderBy('name')->get(),
+            'tags' => Tag::query()->select(['id', 'slug', 'updated_at'])->has('threads')->orderBy('slug')->get(),
+            'threads' => $threads,
+        ])->render();
+
+        // Added here rather than in the view: with short_open_tag enabled (as on
+        // Vercel), a literal "<?xml" in a Blade file is parsed as PHP.
+        return response('<?xml version="1.0" encoding="UTF-8"?>'."\n".$urls)
             ->header('Content-Type', 'application/xml; charset=UTF-8')
             ->header('Cache-Control', 'public, max-age=3600');
     }
