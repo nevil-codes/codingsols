@@ -58,3 +58,11 @@ test('password can be reset with valid token', function () {
         return true;
     });
 });
+
+test('the spam folder hint only shows after a reset link is sent', function () {
+    $this->get('/forgot-password')->assertDontSee('Check your spam or junk folder');
+
+    $this->withSession(['status' => __('passwords.sent')])
+        ->get('/forgot-password')
+        ->assertSee('Check your spam or junk folder');
+});
