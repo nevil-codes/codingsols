@@ -1,3 +1,4 @@
+@php($unreadNotifications = auth()->user()?->unreadNotifications()->count() ?? 0)
 <nav x-data="{ open: false }" class="sticky top-0 z-40 border-b border-gray-200/80 dark:border-gray-800/80 bg-white/80 dark:bg-gray-950/80 backdrop-blur">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-14 gap-4">
@@ -28,6 +29,14 @@
                 <div x-data="themeToggle"><x-theme-toggle /></div>
 
                 @auth
+                    <a href="{{ route('notifications.index') }}" class="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
+                        aria-label="Notifications{{ $unreadNotifications ? ' ('.$unreadNotifications.' unread)' : '' }}">
+                        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
+                        @if ($unreadNotifications)
+                            <span class="absolute -top-0.5 -right-0.5 min-w-[1.125rem] rounded-full bg-accent-600 px-1 text-center text-[0.6875rem] font-semibold leading-[1.125rem] text-white" aria-hidden="true">{{ $unreadNotifications > 9 ? '9+' : $unreadNotifications }}</span>
+                        @endif
+                    </a>
+
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="flex items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950">
@@ -96,6 +105,9 @@
                     </div>
                 </div>
                 <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('notifications.index')">
+                        Notifications @if ($unreadNotifications)<span class="ml-1 rounded-full bg-accent-600 px-1.5 text-xs font-semibold text-white">{{ $unreadNotifications }}<span class="sr-only"> unread</span></span>@endif
+                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('dashboard')">My activity</x-responsive-nav-link>
                     @can('admin')
                         <x-responsive-nav-link :href="route('admin.dashboard')">Admin</x-responsive-nav-link>

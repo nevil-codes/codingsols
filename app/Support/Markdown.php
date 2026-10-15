@@ -34,4 +34,23 @@ class Markdown
             $html,
         );
     }
+
+    /**
+     * Plain text of user-written Markdown, for previews, descriptions and
+     * notifications.
+     */
+    public static function excerpt(?string $markdown, int $limit = 160): string
+    {
+        return Str::limit(Str::squish(html_entity_decode(strip_tags(Str::markdown((string) $markdown, ['html_input' => 'strip'])), ENT_QUOTES | ENT_HTML5)), $limit);
+    }
+
+    /**
+     * Escape user-written text for a Markdown context such as a mail line, so
+     * it shows literally instead of becoming links or formatting. <, > and &
+     * are left alone: Blade already escapes those as HTML entities.
+     */
+    public static function escape(string $text): string
+    {
+        return preg_replace('/[\\\\`*_{}\[\]()#+\-.!|~]/', '\\\\$0', $text);
+    }
 }
