@@ -102,3 +102,29 @@ test('links in posts are marked nofollow ugc', function () {
     $this->get(route('threads.show', $thread))
         ->assertSee('<a rel="nofollow ugc noopener" href="https://spam.example">my site</a>', false);
 });
+
+test('password reset emails are rate-limited per IP', function () {
+    foreach (range(1, 3) as $i) {
+        $this->post(route('password.email'), ['email' => "user{$i}@example.com"])->assertStatus(302);
+    }
+
+    $this->post(route('password.email'), ['email' => 'user4@example.com'])->assertTooManyRequests();
+});
+
+test('changing the password is rate-limited', function () {
+    $user = User::factory()->create();
+
+    foreach (range(1, 6) as $i) {
+        $this->actingAs($user)->put(route('password.update'), ['current_password' => 'wrong', 'password' => 'new-password', 'password_confirmation' => 'new-password']);
+    }
+
+    $this->put(route('password.update'), ['current_password' => 'wrong'])->assertTooManyRequests();
+});
+
+test('search is rate-limited', function () {
+    foreach (range(1, 30) as $i) {
+        $this->get(route('search', ['q' => "term {$i}"]))->assertOk();
+    }
+
+    $this->get(route('search', ['q' => 'one more']))->assertTooManyRequests();
+});
