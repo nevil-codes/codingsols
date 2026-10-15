@@ -40,6 +40,24 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Terms -->
+        <div class="mt-5">
+            <label for="terms" class="flex items-start gap-3">
+                <input id="terms" type="checkbox" name="terms" value="1" required @checked(old('terms'))
+                    class="mt-0.5 rounded border-gray-300 text-accent-600 focus:ring-accent-500 dark:border-gray-700 dark:bg-gray-900"
+                    aria-describedby="privacy-notice">
+                <span class="text-sm text-gray-700 dark:text-gray-300">
+                    I agree to the <a href="{{ \App\Support\LegalLocale::url('terms') }}" target="_blank" class="font-medium text-accent-600 hover:underline dark:text-accent-400">{{ \App\Support\LegalLocale::for(request()) === 'de' ? 'Terms of Use (Nutzungsbedingungen)' : 'Terms of Use' }}</a>.
+                </span>
+            </label>
+            <x-input-error :messages="$errors->get('terms')" class="mt-2" />
+
+            <p id="privacy-notice" class="mt-3 text-xs text-gray-500 dark:text-gray-400">
+                We use your name and email to run your account. Read how we handle your data in our
+                <a href="{{ \App\Support\LegalLocale::url('privacy') }}" target="_blank" class="underline hover:text-gray-900 dark:hover:text-gray-100">{{ \App\Support\LegalLocale::for(request()) === 'de' ? 'Privacy Policy (Datenschutzerklärung)' : 'Privacy Policy' }}</a>.
+            </p>
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
                 {{ __('Already registered?') }}

@@ -34,6 +34,9 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'terms' => ['accepted'],
+        ], [
+            'terms.accepted' => 'Please accept the Terms of Use to create an account.',
         ]);
 
         $user = User::create([
@@ -41,6 +44,7 @@ class RegisteredUserController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+        $user->forceFill(['terms_accepted_at' => now(), 'terms_version' => config('legal.terms_version')])->save();
 
         event(new Registered($user));
 

@@ -4,9 +4,11 @@
             <x-application-logo class="h-5 w-5" />
             <span>&copy; {{ date('Y') }} Codingsols. Built by developers, for developers.</span>
         </div>
-        <nav class="flex gap-6" aria-label="Footer">
+        <nav class="flex flex-wrap justify-center gap-x-6 gap-y-2" aria-label="Footer">
             <a href="{{ route('about') }}" class="hover:text-gray-900 dark:hover:text-white">About</a>
             <a href="{{ route('contact') }}" class="hover:text-gray-900 dark:hover:text-white">Contact</a>
+            <a href="{{ \App\Support\LegalLocale::url('privacy') }}" class="hover:text-gray-900 dark:hover:text-white">{{ \App\Support\LegalLocale::label('privacy') }}</a>
+            <a href="{{ \App\Support\LegalLocale::url('terms') }}" class="hover:text-gray-900 dark:hover:text-white">{{ \App\Support\LegalLocale::label('terms') }}</a>
             <a href="https://github.com/nevil-codes/codingsols" class="hover:text-gray-900 dark:hover:text-white">GitHub</a>
         </nav>
     </div>
