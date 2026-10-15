@@ -2,6 +2,8 @@
 
 A community forum where programmers ask questions, share answers and help each other level up.
 
+**Live site: [codingsols.vercel.app](https://codingsols.vercel.app)**
+
 [![CI](https://github.com/nevil-codes/codingsols/actions/workflows/ci.yml/badge.svg)](https://github.com/nevil-codes/codingsols/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -35,7 +37,8 @@ A community forum where programmers ask questions, share answers and help each o
 | Database | SQLite locally, PostgreSQL in production (tested in CI on both) |
 | Testing | Pest, Laravel Pint |
 | CI | GitHub Actions: Pint, tests on SQLite and PostgreSQL, Docker image smoke test |
-| Deployment | Vercel (serverless PHP) or Docker (Nginx + PHP-FPM, queue worker, scheduler) |
+| Email | Resend |
+| Deployment | Vercel (serverless PHP) with Neon PostgreSQL, or Docker (Nginx + PHP-FPM, queue worker, scheduler) |
 
 ## Getting started
 
@@ -108,18 +111,23 @@ vendor/bin/pint --test  # code style check
 ## Project structure
 
 ```
-app/Http/Controllers   Home, categories, threads, comments, search, contact
-app/Models             Category, Thread, Comment, ContactMessage, User
-app/Policies           Who can edit or delete threads and comments
-database/seeders       Categories, plus demo content for local development
-resources/views        Blade pages and reusable components (resources/views/components)
-tests/Feature          HTTP tests for every feature
-legacy/                The original plain-PHP version, kept for reference
+app/Http/Controllers         Forum pages: categories, threads, replies, votes, tags, search, contact
+app/Http/Controllers/Admin   Admin area: reports queue, categories, contact messages
+app/Http/Middleware          Security headers, honeypot and Turnstile spam checks
+app/Models                   Category, Thread, Comment, Tag, Vote, Report, ContactMessage, User
+app/Policies                 Who can edit, delete, vote on, accept, lock or report what
+app/Search                   Scout engine that matches every search word in titles, bodies and replies
+database/seeders             Categories, plus demo content for local development
+resources/views              Blade pages and reusable components (resources/views/components)
+tests/Feature                HTTP tests for every feature
+api/index.php, vercel.json   Vercel entry point and configuration
+Dockerfile                   Production image for container hosts
+legacy/                      The original plain-PHP version, kept for reference
 ```
 
 ## Roadmap
 
-Planned work is tracked in [GitHub issues](https://github.com/nevil-codes/codingsols/issues) and [milestones](https://github.com/nevil-codes/codingsols/milestones): tags, voting and accepted answers, moderation tools, and deployment.
+Planned work is tracked in [GitHub issues](https://github.com/nevil-codes/codingsols/issues). The current milestone, [v2.2 Launch polish & community](https://github.com/nevil-codes/codingsols/milestone/4), covers reply notifications, reputation and badges, bookmarks, a sitemap, profile pictures and a custom domain.
 
 ## Contributing
 
