@@ -30,6 +30,7 @@ In **Settings → Environment Variables**, add these for **Production**:
 | `RESEND_API_KEY` | Your Resend API key (see [Email with Resend](#email-with-resend)) |
 | `MAIL_FROM_ADDRESS` | An address on your verified domain, e.g. `hello@yourdomain.com` |
 | `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Optional |
+| `SENTRY_LARAVEL_DSN` | Optional (see [Error reporting with Sentry](#error-reporting-with-sentry)) |
 
 Cache paths, logging, sessions and the queue are already set in `vercel.json`.
 
@@ -95,6 +96,7 @@ Copy the list from [`.env.production.example`](.env.production.example) into you
 | `SESSION_SECURE_COOKIE` | `true` (the site must be served over HTTPS) |
 | `LOG_CHANNEL` | `stderr`, so logs show up in your host's log viewer |
 | `TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Optional; leave empty to disable Turnstile |
+| `SENTRY_LARAVEL_DSN` | Optional; leave empty to disable error reporting |
 
 ### First deploy
 
@@ -150,6 +152,15 @@ Emails are queued, so the **worker must be running** for them to send. To check,
 
 The widget then appears on the sign-up and contact forms. If Cloudflare can't be reached, submissions are let through and a warning is logged; the honeypot, timing check and rate limits still apply.
 
+## Error reporting with Sentry (optional)
+
+Without it, errors only appear in your host's logs (on Vercel, the function logs, which are kept for a short time). [Sentry](https://sentry.io) collects them in one place, groups repeats and can email you when something new breaks. The free plan is enough for a small site.
+
+1. Sign up at [sentry.io](https://sentry.io) and create a project with the **Laravel** platform.
+2. Copy the project's **DSN** (Settings → Client Keys) and set it as `SENTRY_LARAVEL_DSN`, then redeploy.
+
+Leave `SENTRY_LARAVEL_DSN` empty to turn it off. Personal data such as IP addresses and user emails is not sent unless you set `SENTRY_SEND_DEFAULT_PII=true`. Performance tracing is off unless you set `SENTRY_TRACES_SAMPLE_RATE` (e.g. `0.1` for 10% of requests).
+
 ## Backups
 
 Use your database host's automatic backups. Railway, Render, Neon, Supabase and DigitalOcean all offer daily backups or point-in-time recovery for managed PostgreSQL. Make sure they're enabled and test a restore once.
@@ -174,5 +185,5 @@ The app stores no uploaded files, so the database is the only thing to back up.
 - **"419 Page Expired" or logged out on every request:** `APP_URL` doesn't match the real domain, or `SESSION_SECURE_COOKIE=true` is set while the site isn't on HTTPS.
 - **Verification emails never arrive:** the worker isn't running, or the Resend domain isn't verified. Check the worker logs and run `php artisan queue:failed`.
 - **Mixed-content or http:// links:** make sure your host forwards `X-Forwarded-Proto`. The app trusts the proxy in front of it and forces https:// URLs in production.
-- **Vercel: "500" on every page:** check the function logs in the Vercel dashboard. The usual causes are a missing `APP_KEY` or the Neon database not being connected (`DATABASE_URL` missing).
+- **Vercel: "500" on every page:** check the function logs in the Vercel dashboard (or Sentry, if set up). The usual causes are a missing `APP_KEY` or the Neon database not being connected (`DATABASE_URL` missing).
 - **Vercel: unstyled pages:** the front-end build failed. Check the build logs for the `npm run build` step.
