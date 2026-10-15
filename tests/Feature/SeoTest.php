@@ -4,6 +4,7 @@ use App\Models\Comment;
 use App\Models\Tag;
 use App\Models\Thread;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 
 /**
  * @return Collection<int, SimpleXMLElement>
@@ -22,6 +23,8 @@ test('the sitemap lists categories, used tags and threads', function () {
     $response = $this->get('/sitemap.xml')
         ->assertOk()
         ->assertHeader('Content-Type', 'application/xml; charset=UTF-8');
+
+    expect($response->getContent())->toStartWith('<?xml version="1.0" encoding="UTF-8"?>'."\n<urlset");
 
     $urls = sitemapEntries($response->getContent())->map(fn ($url) => (string) $url->loc);
 
@@ -74,4 +77,15 @@ test('structured data cannot break out of its script tag', function () {
     $html = $this->get(route('threads.show', $thread))->assertOk()->getContent();
 
     expect($html)->not->toContain('</script><script>alert(1)');
+});
+
+test('no Blade view contains a literal PHP short open tag', function () {
+    // Production PHP may have short_open_tag enabled, which parses "<?xml" or
+    // similar as PHP code and breaks the page.
+    $offenders = collect(File::allFiles(resource_path('views')))
+        ->filter(fn ($file) => preg_match('/<\?(?!php|=)/', $file->getContents()))
+        ->map(fn ($file) => $file->getRelativePathname())
+        ->values();
+
+    expect($offenders)->toBeEmpty();
 });
