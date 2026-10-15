@@ -12,30 +12,31 @@ test('privacy policy and terms are available in English and German', function (s
 ]);
 
 test('the privacy policy and terms are separate documents that link to each other', function () {
-    $this->get(route('legal.terms.de'))
-        ->assertSee(route('legal.privacy.de'), false)
+    $this->get(route('legal.terms', ['lang' => 'de']))
+        ->assertSee(route('legal.privacy', ['lang' => 'de']), false)
         ->assertDontSee('Deine Rechte');
 
     $this->get(route('legal.privacy.de'))->assertSee('Art. 15 DSGVO');
 });
 
-test('visitors in Germany get the German documents in the footer', function () {
+test('both documents exist in every supported language', function () {
+    foreach (array_keys(config('locales.supported')) as $code) {
+        $this->get(route('legal.privacy', ['lang' => $code]))->assertOk()->assertSee('lang="'.$code.'"', false);
+        $this->get(route('legal.terms', ['lang' => $code]))->assertOk()->assertSee('lang="'.$code.'"', false);
+    }
+});
+
+test('legal pages follow the site language unless a language is requested', function () {
+    $this->withHeader('x-vercel-ip-country', 'FR')->get(route('legal.privacy'))->assertSee('Politique de confidentialité');
+    $this->withHeader('x-vercel-ip-country', 'FR')->get(route('legal.privacy', ['lang' => 'en']))->assertSee('Privacy Policy');
+    $this->get(route('legal.terms.de'))->assertSee('Nutzungsbedingungen');
+});
+
+test('visitors in Germany see Datenschutz in the footer', function () {
     $this->withHeader('x-vercel-ip-country', 'DE')->get(route('home'))
-        ->assertSee('href="'.route('legal.privacy.de').'"', false)
+        ->assertSee('href="'.route('legal.privacy').'"', false)
         ->assertSee('>Datenschutz<', false)
         ->assertSee('>Nutzungsbedingungen<', false);
-});
-
-test('visitors whose browser prefers German get the German documents', function () {
-    $this->withHeader('Accept-Language', 'de-DE,de;q=0.9,en;q=0.8')->get(route('home'))
-        ->assertSee('href="'.route('legal.privacy.de').'"', false);
-});
-
-test('other visitors get the English documents', function () {
-    $this->withHeaders(['x-vercel-ip-country' => 'US', 'Accept-Language' => 'en-US'])->get(route('home'))
-        ->assertSee('href="'.route('legal.privacy').'"', false)
-        ->assertSee('>Privacy<', false)
-        ->assertDontSee('>Datenschutz<', false);
 });
 
 test('operator details come from configuration', function () {

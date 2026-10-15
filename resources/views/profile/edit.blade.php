@@ -1,7 +1,7 @@
-<x-app-layout title="Profile">
+<x-app-layout title="{{ __('Profile') }}">
     <x-slot name="header">
-        <h1 class="text-2xl font-bold tracking-tight">Profile settings</h1>
-        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Manage your name, email, password and notifications.</p>
+        <h1 class="text-2xl font-bold tracking-tight">{{ __('Profile settings') }}</h1>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{{ __('Manage your name, email, password and notifications.') }}</p>
     </x-slot>
 
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">

@@ -33,7 +33,7 @@ class ThreadController extends Controller
             return $thread;
         });
 
-        return redirect()->route('threads.show', $thread)->with('flash', 'Your question has been posted.');
+        return redirect()->route('threads.show', $thread)->with('flash', __('Your question has been posted.'));
     }
 
     public function show(Request $request, Thread $thread): View
@@ -88,7 +88,7 @@ class ThreadController extends Controller
             $thread->tags()->sync(Tag::findOrCreateMany($request->validated('tag_names'))->modelKeys());
         });
 
-        return redirect()->route('threads.show', $thread)->with('flash', 'Your question has been updated.');
+        return redirect()->route('threads.show', $thread)->with('flash', __('Your question has been updated.'));
     }
 
     public function destroy(Thread $thread): RedirectResponse
@@ -98,6 +98,6 @@ class ThreadController extends Controller
         $category = $thread->category;
         $thread->delete();
 
-        return redirect()->route('categories.show', $category)->with('flash', 'Your question has been deleted.');
+        return redirect()->route('categories.show', $category)->with('flash', __('Your question has been deleted.'));
     }
 }

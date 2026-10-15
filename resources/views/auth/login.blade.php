@@ -1,4 +1,4 @@
-<x-guest-layout title="Log in">
+<x-guest-layout title="{{ __('Log in') }}">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -46,7 +46,7 @@
     </form>
 
     <p class="mt-6 border-t border-gray-200 pt-6 text-center text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400">
-        New to Codingsols?
-        <a href="{{ route('register') }}" class="font-medium text-accent-600 hover:underline dark:text-accent-400">Create an account</a>
+        {{ __('New to Codingsols?') }}
+        <a href="{{ route('register') }}" class="font-medium text-accent-600 hover:underline dark:text-accent-400">{{ __('Create an account') }}</a>
     </p>
 </x-guest-layout>

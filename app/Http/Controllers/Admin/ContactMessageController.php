@@ -20,6 +20,6 @@ class ContactMessageController extends Controller
     {
         $message->delete();
 
-        return redirect()->route('admin.messages.index')->with('flash', 'Message deleted.');
+        return redirect()->route('admin.messages.index')->with('flash', __('Message deleted.'));
     }
 }

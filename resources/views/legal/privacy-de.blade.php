@@ -1,5 +1,5 @@
 @php($lang = 'de')
-<x-legal-page lang="de" title="Datenschutzerklärung" :updated="config('legal.privacy_updated')" :other="route('legal.privacy')">
+<x-legal-page lang="de" title="Datenschutzerklärung" :updated="config('legal.privacy_updated')">
     <p>Diese Datenschutzerklärung informiert dich darüber, welche personenbezogenen Daten Codingsols verarbeitet, zu welchem Zweck und welche Rechte du nach der Datenschutz-Grundverordnung (DSGVO) hast. Codingsols verwendet keine Werbung, keine Analyse-Tools und keine Tracking-Cookies.</p>
 
     <h2>1. Verantwortlicher</h2>
@@ -16,12 +16,13 @@
     <ul>
         <li><strong><code>codingsols-session</code></strong>: hält dich angemeldet und merkt sich Formulareingaben zwischen Seiten. Läuft nach 2 Stunden Inaktivität oder beim Abmelden ab.</li>
         <li><strong><code>XSRF-TOKEN</code></strong>: schützt Formulare vor Cross-Site-Request-Forgery. Läuft nach 2 Stunden ab.</li>
+        <li><strong><code>locale</code></strong>: merkt sich die Sprache, die du im Sprachmenü gewählt hast. Wird nur gesetzt, wenn du eine Sprache auswählst; läuft nach 1 Jahr ab.</li>
         <li><strong><code>theme</code></strong> (lokaler Speicher im Browser): merkt sich, ob du den hellen oder dunklen Modus gewählt hast. Dieser Wert verlässt dein Gerät nicht.</li>
     </ul>
     <p>Da diese Speicherungen für einen von dir ausdrücklich gewünschten Dienst unbedingt erforderlich sind, ist keine Einwilligung nötig (§ 25 Abs. 2 Nr. 2 TDDDG). Zu einer Sitzung speichern wir auf dem Server auch deine IP-Adresse und deinen User-Agent, um dein Konto zu schützen; diese Daten werden mit Ablauf der Sitzung gelöscht.</p>
 
     <h2>4. Dein Benutzerkonto</h2>
-    <p>Bei der Registrierung speichern wir deinen <strong>Namen, deine E-Mail-Adresse und dein Passwort</strong> (nur als sicherer Hash, nie im Klartext) sowie den Zeitpunkt, zu dem du den <a href="{{ route('legal.terms.de') }}">Nutzungsbedingungen</a> zugestimmt hast. Deine E-Mail-Adresse nutzen wir, um dein Konto zu bestätigen, dein Passwort zurückzusetzen und dich – wenn du möchtest – über Antworten auf deine Fragen zu informieren.</p>
+    <p>Bei der Registrierung speichern wir deinen <strong>Namen, deine E-Mail-Adresse und dein Passwort</strong> (nur als sicherer Hash, nie im Klartext) sowie den Zeitpunkt, zu dem du den <a href="{{ route('legal.terms', ['lang' => 'de']) }}">Nutzungsbedingungen</a> zugestimmt hast. Deine E-Mail-Adresse nutzen wir, um dein Konto zu bestätigen, dein Passwort zurückzusetzen und dich – wenn du möchtest – über Antworten auf deine Fragen zu informieren.</p>
     <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Bereitstellung des Dienstes, für den du dich registriert hast).</p>
     <p><strong>Speicherdauer:</strong> bis du dein Konto löschst. Das kannst du jederzeit selbst in deinen Profileinstellungen tun.</p>
 

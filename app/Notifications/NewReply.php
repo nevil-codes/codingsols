@@ -48,13 +48,13 @@ class NewReply extends Notification implements ShouldQueue
         $thread = $this->comment->thread;
 
         return (new MailMessage)
-            ->subject('New reply to "'.Str::limit($thread->title, 60).'"')
+            ->subject(__('New reply to ":title"', ['title' => Str::limit($thread->title, 60)]))
             // User-written text is escaped so it can't add links or formatting to the email.
-            ->greeting('Hi '.Markdown::escape($notifiable->name).',')
-            ->line(Markdown::escape($this->comment->user->name).' replied to your question **'.Markdown::escape($thread->title).'**:')
+            ->greeting(__('Hi :name,', ['name' => Markdown::escape($notifiable->name)]))
+            ->line(__(':name replied to your question **:title**:', ['name' => Markdown::escape($this->comment->user->name), 'title' => Markdown::escape($thread->title)]))
             ->line('> '.Markdown::escape($this->comment->excerpt()))
-            ->action('View the reply', $this->url())
-            ->line('Don\'t want these emails? Turn them off in your [profile settings]('.route('profile.edit').'#notifications).');
+            ->action(__('View the reply'), $this->url())
+            ->line(__("Don't want these emails? Turn them off in your [profile settings](:url).", ['url' => route('profile.edit').'#notifications']));
     }
 
     /**

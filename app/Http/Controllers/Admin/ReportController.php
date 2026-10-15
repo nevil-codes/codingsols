@@ -40,7 +40,7 @@ class ReportController extends Controller
             ->where('reportable_id', $report->reportable_id)
             ->update(['resolved_at' => now(), 'resolved_by' => $request->user()->id]);
 
-        return redirect()->route('admin.reports.index')->with('flash', 'Reports dismissed.');
+        return redirect()->route('admin.reports.index')->with('flash', __('Reports dismissed.'));
     }
 
     /**
@@ -50,6 +50,6 @@ class ReportController extends Controller
     {
         $report->reportable?->delete();
 
-        return redirect()->route('admin.reports.index')->with('flash', 'Content removed.');
+        return redirect()->route('admin.reports.index')->with('flash', __('Content removed.'));
     }
 }

@@ -9,7 +9,7 @@
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2"><x-highlight :text="$thread->excerpt()" :terms="$highlight" /></p>
         <div class="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
             @if ($matchedInReply)
-                <x-badge>Matched in a reply</x-badge>
+                <x-badge>{{ __('Matched in a reply') }}</x-badge>
             @endif
             @if ($showCategory)
                 <x-badge :href="route('categories.show', $thread->category)">{{ $thread->category->name }}</x-badge>
@@ -19,24 +19,24 @@
             @endforeach
             <span>{{ $thread->user->name }}</span>
             <span aria-hidden="true">&middot;</span>
-            <time datetime="{{ $thread->created_at->toIso8601String() }}" title="{{ $thread->created_at->toDayDateTimeString() }}">{{ $thread->created_at->diffForHumans() }}</time>
+            <time datetime="{{ $thread->created_at->toIso8601String() }}" title="{{ $thread->created_at->isoFormat('LLLL') }}">{{ $thread->created_at->diffForHumans() }}</time>
         </div>
     </div>
     <div class="flex shrink-0 gap-2 self-center text-center">
         <div class="w-14 py-1">
             <div class="text-sm font-semibold tabular-nums text-gray-900 dark:text-gray-100">{{ $thread->score }}</div>
-            <div class="text-xs text-gray-500 dark:text-gray-400">{{ Str::plural('vote', abs($thread->score)) }}</div>
+            <div class="text-xs text-gray-500 dark:text-gray-400">{{ trans_choice('vote|votes', abs($thread->score)) }}</div>
         </div>
         <div @class([
             'w-14 rounded-lg py-1',
             'bg-emerald-700 text-white' => $thread->accepted_comment_id,
             'ring-1 ring-inset ring-emerald-600 text-emerald-700 dark:ring-emerald-400 dark:text-emerald-300' => ! $thread->accepted_comment_id && $thread->comments_count,
             'text-gray-500 dark:text-gray-400' => ! $thread->accepted_comment_id && ! $thread->comments_count,
-        ]) @if ($thread->accepted_comment_id) title="Has an accepted answer" @endif>
+        ]) @if ($thread->accepted_comment_id) title="{{ __('Has an accepted answer') }}" @endif>
             <div class="text-sm font-semibold tabular-nums">{{ $thread->comments_count }}</div>
-            <div class="text-xs">{{ Str::plural('reply', $thread->comments_count) }}</div>
+            <div class="text-xs">{{ trans_choice('reply|replies', $thread->comments_count) }}</div>
             @if ($thread->accepted_comment_id)
-                <span class="sr-only">, has an accepted answer</span>
+                <span class="sr-only">, {{ __('has an accepted answer') }}</span>
             @endif
         </div>
     </div>

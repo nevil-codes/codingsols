@@ -1,6 +1,6 @@
 @php($lang = 'en')
-<x-legal-page lang="en" title="Terms of Use" :updated="config('legal.terms_version')" :other="route('legal.terms.de')">
-    <p>These terms apply to the use of Codingsols, a free question-and-answer forum for programmers. By creating an account you agree to them. How we handle personal data is explained separately in our <a href="{{ route('legal.privacy') }}">Privacy Policy</a>.</p>
+<x-legal-page lang="en" title="Terms of Use" :updated="config('legal.terms_version')">
+    <p>These terms apply to the use of Codingsols, a free question-and-answer forum for programmers. By creating an account you agree to them. How we handle personal data is explained separately in our <a href="{{ route('legal.privacy', ['lang' => 'en']) }}">Privacy Policy</a>.</p>
 
     <h2>1. Operator</h2>
     @include('legal.partials.operator')

@@ -6,6 +6,7 @@ use App\Notifications\QueuedResetPassword;
 use App\Notifications\QueuedVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -50,6 +51,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         // Notifications are polymorphic, so the database doesn't cascade them.
         static::deleting(fn (User $user) => $user->notifications()->delete());
+    }
+
+    /**
+     * Emails are sent in the language the user last used on the site.
+     */
+    public function preferredLocale(): ?string
+    {
+        return $this->locale;
     }
 
     public function sendEmailVerificationNotification(): void

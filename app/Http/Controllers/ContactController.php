@@ -18,6 +18,6 @@ class ContactController extends Controller
     {
         ContactMessage::create($request->validated());
 
-        return redirect()->route('contact')->with('flash', 'Thanks! Your message has been sent.');
+        return redirect()->route('contact')->with('flash', __('Thanks! Your message has been sent.'));
     }
 }

@@ -25,6 +25,8 @@ A community forum where programmers ask questions, share answers and help each o
 - **Moderation**: members can report posts; admins get a reports queue, can lock threads, delete posts, manage categories and read contact messages
 - **Activity page** listing your questions and recent replies
 - **Light and dark themes** that follow your system setting, with a manual toggle
+- **Seven languages**: English, German, French, Dutch, Spanish, Italian and Portuguese. The language is picked from the visitor's country or browser, can be switched from the navbar, and is remembered on the account so emails arrive in the same language
+- **Privacy policy and terms of use** in every language, with terms acceptance at sign-up
 - **Responsive and accessible**: mobile layout, keyboard navigation, skip link and visible focus states
 - **Secure by default**: CSRF protection, escaped output, safe Markdown (raw HTML and `javascript:` links are stripped), per-user rate limits on posting, voting and reporting, a honeypot and timing check against bots on sign-up and the contact form, and `nofollow ugc` on links in posts
 

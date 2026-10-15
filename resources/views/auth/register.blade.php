@@ -1,4 +1,4 @@
-<x-guest-layout title="Sign up">
+<x-guest-layout title="{{ __('Sign up') }}">
     <form method="POST" action="{{ route('register') }}" class="relative">
         @csrf
         <x-honeypot />
@@ -47,14 +47,13 @@
                     class="mt-0.5 rounded border-gray-300 text-accent-600 focus:ring-accent-500 dark:border-gray-700 dark:bg-gray-900"
                     aria-describedby="privacy-notice">
                 <span class="text-sm text-gray-700 dark:text-gray-300">
-                    I agree to the <a href="{{ \App\Support\LegalLocale::url('terms') }}" target="_blank" class="font-medium text-accent-600 hover:underline dark:text-accent-400">{{ \App\Support\LegalLocale::for(request()) === 'de' ? 'Terms of Use (Nutzungsbedingungen)' : 'Terms of Use' }}</a>.
+                    {!! __('I agree to the :terms.', ['terms' => '<a href="'.e(route('legal.terms')).'" target="_blank" class="font-medium text-accent-600 hover:underline dark:text-accent-400">'.e(__('Terms of Use')).'</a>']) !!}
                 </span>
             </label>
             <x-input-error :messages="$errors->get('terms')" class="mt-2" />
 
             <p id="privacy-notice" class="mt-3 text-xs text-gray-500 dark:text-gray-400">
-                We use your name and email to run your account. Read how we handle your data in our
-                <a href="{{ \App\Support\LegalLocale::url('privacy') }}" target="_blank" class="underline hover:text-gray-900 dark:hover:text-gray-100">{{ \App\Support\LegalLocale::for(request()) === 'de' ? 'Privacy Policy (Datenschutzerklärung)' : 'Privacy Policy' }}</a>.
+                {!! __('We use your name and email to run your account. Read how we handle your data in our :privacy.', ['privacy' => '<a href="'.e(route('legal.privacy')).'" target="_blank" class="underline hover:text-gray-900 dark:hover:text-gray-100">'.e(__('Privacy Policy')).'</a>']) !!}
             </p>
         </div>
 

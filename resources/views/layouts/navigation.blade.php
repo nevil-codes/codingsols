@@ -9,28 +9,29 @@
                 </a>
 
                 <div class="hidden md:flex items-center gap-6">
-                    <x-nav-link :href="route('home').'#categories'" :active="request()->routeIs('categories.*')">Categories</x-nav-link>
-                    <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.*')">Tags</x-nav-link>
-                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')">About</x-nav-link>
-                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">Contact</x-nav-link>
+                    <x-nav-link :href="route('home').'#categories'" :active="request()->routeIs('categories.*')">{{ __('Categories') }}</x-nav-link>
+                    <x-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.*')">{{ __('Tags') }}</x-nav-link>
+                    <x-nav-link :href="route('about')" :active="request()->routeIs('about')">{{ __('About') }}</x-nav-link>
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">{{ __('Contact') }}</x-nav-link>
                 </div>
             </div>
 
             <div class="hidden md:flex items-center gap-3">
-                <form action="{{ route('search') }}" method="GET" role="search" aria-label="Site">
-                    <label for="nav-search" class="sr-only">Search questions</label>
+                <form action="{{ route('search') }}" method="GET" role="search" aria-label="{{ __('Site') }}">
+                    <label for="nav-search" class="sr-only">{{ __('Search questions') }}</label>
                     <div class="relative">
                         <svg class="pointer-events-none absolute left-2.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.45 4.39l3.08 3.08a.75.75 0 1 1-1.06 1.06l-3.08-3.08A7 7 0 0 1 2 9Z" clip-rule="evenodd" /></svg>
-                        <input id="nav-search" type="search" name="q" value="{{ request()->routeIs('search') ? request('q') : '' }}" placeholder="Search…"
+                        <input id="nav-search" type="search" name="q" value="{{ request()->routeIs('search') ? request('q') : '' }}" placeholder="{{ __('Search…') }}"
                             class="w-48 lg:w-64 rounded-lg border-gray-200 bg-gray-50 pl-8 py-1.5 text-sm focus:bg-white focus:border-accent-500 focus:ring-accent-500 dark:border-gray-800 dark:bg-gray-900 dark:focus:bg-gray-900">
                     </div>
                 </form>
 
+                <x-language-switcher />
                 <div x-data="themeToggle"><x-theme-toggle /></div>
 
                 @auth
                     <a href="{{ route('notifications.index') }}" class="relative rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
-                        aria-label="Notifications{{ $unreadNotifications ? ' ('.$unreadNotifications.' unread)' : '' }}">
+                        aria-label="{{ $unreadNotifications ? trans_choice('Notifications (:count unread)|Notifications (:count unread)', $unreadNotifications) : __('Notifications') }}">
                         <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" /></svg>
                         @if ($unreadNotifications)
                             <span class="absolute -top-0.5 -right-0.5 min-w-[1.125rem] rounded-full bg-accent-600 px-1 text-center text-[0.6875rem] font-semibold leading-[1.125rem] text-white" aria-hidden="true">{{ $unreadNotifications > 9 ? '9+' : $unreadNotifications }}</span>
@@ -40,7 +41,7 @@
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="flex items-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-gray-950">
-                                <span class="sr-only">Open account menu</span>
+                                <span class="sr-only">{{ __('Open account menu') }}</span>
                                 <x-avatar :user="Auth::user()" size="sm" />
                             </button>
                         </x-slot>
@@ -50,28 +51,28 @@
                                 <div class="text-sm font-medium truncate">{{ Auth::user()->name }}</div>
                                 <div class="text-xs text-gray-500 dark:text-gray-400 truncate">{{ Auth::user()->email }}</div>
                             </div>
-                            <x-dropdown-link :href="route('dashboard')">My activity</x-dropdown-link>
+                            <x-dropdown-link :href="route('dashboard')">{{ __('My activity') }}</x-dropdown-link>
                             @can('admin')
-                                <x-dropdown-link :href="route('admin.dashboard')">Admin</x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.dashboard')">{{ __('Admin') }}</x-dropdown-link>
                             @endcan
-                            <x-dropdown-link :href="route('profile.edit')">Profile</x-dropdown-link>
+                            <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
-                                    Log out
+                                    {{ __('Log out') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
                     </x-dropdown>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">Log in</a>
-                    <x-button :href="route('register')" size="sm">Sign up</x-button>
+                    <a href="{{ route('login') }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">{{ __('Log in') }}</a>
+                    <x-button :href="route('register')" size="sm">{{ __('Sign up') }}</x-button>
                 @endauth
             </div>
 
             <div class="flex items-center gap-1 md:hidden">
                 <div x-data="themeToggle"><x-theme-toggle /></div>
-                <button @click="open = ! open" class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="Toggle menu">
+                <button @click="open = ! open" class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800" :aria-expanded="open.toString()" aria-controls="mobile-menu" aria-label="{{ __('Toggle menu') }}">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <path :class="{ 'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{ 'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -82,18 +83,21 @@
     </div>
 
     <div id="mobile-menu" x-cloak x-show="open" class="md:hidden border-t border-gray-200 dark:border-gray-800">
+        <div class="px-4 pt-3">
+            <x-language-switcher compact id="mobile" />
+        </div>
         <div class="px-4 py-3">
-            <form action="{{ route('search') }}" method="GET" role="search" aria-label="Mobile site">
-                <label for="mobile-search" class="sr-only">Search questions</label>
-                <input id="mobile-search" type="search" name="q" placeholder="Search questions…"
+            <form action="{{ route('search') }}" method="GET" role="search" aria-label="{{ __('Mobile site') }}">
+                <label for="mobile-search" class="sr-only">{{ __('Search questions') }}</label>
+                <input id="mobile-search" type="search" name="q" placeholder="{{ __('Search questions…') }}"
                     class="w-full rounded-lg border-gray-200 bg-gray-50 py-2 text-sm focus:border-accent-500 focus:ring-accent-500 dark:border-gray-800 dark:bg-gray-900">
             </form>
         </div>
         <div class="pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('home').'#categories'" :active="request()->routeIs('categories.*')">Categories</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.*')">Tags</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">About</x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">Contact</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('home').'#categories'" :active="request()->routeIs('categories.*')">{{ __('Categories') }}</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('tags.index')" :active="request()->routeIs('tags.*')">{{ __('Tags') }}</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('about')" :active="request()->routeIs('about')">{{ __('About') }}</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">{{ __('Contact') }}</x-responsive-nav-link>
         </div>
         <div class="pt-3 pb-4 border-t border-gray-200 dark:border-gray-800">
             @auth
@@ -106,22 +110,22 @@
                 </div>
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('notifications.index')">
-                        Notifications @if ($unreadNotifications)<span class="ml-1 rounded-full bg-accent-600 px-1.5 text-xs font-semibold text-white">{{ $unreadNotifications }}<span class="sr-only"> unread</span></span>@endif
+                        {{ __('Notifications') }} @if ($unreadNotifications)<span class="ml-1 rounded-full bg-accent-600 px-1.5 text-xs font-semibold text-white">{{ $unreadNotifications }}<span class="sr-only"> {{ __('unread') }}</span></span>@endif
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('dashboard')">My activity</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('dashboard')">{{ __('My activity') }}</x-responsive-nav-link>
                     @can('admin')
-                        <x-responsive-nav-link :href="route('admin.dashboard')">Admin</x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('admin.dashboard')">{{ __('Admin') }}</x-responsive-nav-link>
                     @endcan
-                    <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('profile.edit')">{{ __('Profile') }}</x-responsive-nav-link>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">Log out</x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Log out') }}</x-responsive-nav-link>
                     </form>
                 </div>
             @else
                 <div class="px-4 flex gap-3">
-                    <x-button :href="route('login')" variant="secondary" class="flex-1">Log in</x-button>
-                    <x-button :href="route('register')" class="flex-1">Sign up</x-button>
+                    <x-button :href="route('login')" variant="secondary" class="flex-1">{{ __('Log in') }}</x-button>
+                    <x-button :href="route('register')" class="flex-1">{{ __('Sign up') }}</x-button>
                 </div>
             @endauth
         </div>

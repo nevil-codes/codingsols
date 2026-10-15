@@ -18,7 +18,7 @@ class AcceptedAnswerController extends Controller
 
         return redirect()
             ->to(route('threads.show', $thread).'#reply-'.$comment->id)
-            ->with('flash', 'Answer accepted.');
+            ->with('flash', __('Answer accepted.'));
     }
 
     public function destroy(Thread $thread): RedirectResponse
@@ -27,6 +27,6 @@ class AcceptedAnswerController extends Controller
 
         $thread->acceptedAnswer()->dissociate()->save();
 
-        return redirect()->route('threads.show', $thread)->with('flash', 'Accepted answer removed.');
+        return redirect()->route('threads.show', $thread)->with('flash', __('Accepted answer removed.'));
     }
 }

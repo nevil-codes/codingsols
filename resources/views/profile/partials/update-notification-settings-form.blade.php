@@ -1,8 +1,8 @@
 <section id="notifications" class="scroll-mt-20">
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">Email notifications</h2>
+        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">{{ __('Email notifications') }}</h2>
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Replies always show under <a href="{{ route('notifications.index') }}" class="text-accent-600 hover:underline dark:text-accent-400">Notifications</a>. Choose whether you also get an email.
+            {!! __('Replies always show under :link. Choose whether you also get an email.', ['link' => '<a href="'.e(route('notifications.index')).'" class="text-accent-600 hover:underline dark:text-accent-400">'.e(__('Notifications')).'</a>']) !!}
         </p>
     </header>
 
@@ -14,8 +14,8 @@
             <input type="checkbox" name="notify_replies" value="1" @checked($user->notify_replies)
                 class="mt-0.5 rounded border-gray-300 text-accent-600 focus:ring-accent-500 dark:border-gray-700 dark:bg-gray-900">
             <span>
-                <span class="block text-sm font-medium">Email me when someone replies to my question</span>
-                <span class="block text-sm text-gray-500 dark:text-gray-400">At most one email per question every {{ \App\Notifications\NewReply::EMAIL_COOLDOWN_MINUTES }} minutes.</span>
+                <span class="block text-sm font-medium">{{ __('Email me when someone replies to my question') }}</span>
+                <span class="block text-sm text-gray-500 dark:text-gray-400">{{ __('At most one email per question every :minutes minutes.', ['minutes' => \App\Notifications\NewReply::EMAIL_COOLDOWN_MINUTES]) }}</span>
             </span>
         </label>
 

@@ -1,28 +1,28 @@
 <div>
-    <x-input-label for="title" value="Title" />
+    <x-input-label for="title" :value="__('Title')" />
     <x-text-input id="title" name="title" type="text" class="mt-1 block w-full" :value="old('title', $thread->title ?? '')" required autofocus maxlength="255"
-        placeholder="e.g. How do I read a CSV file into a pandas DataFrame?" />
-    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Summarize the problem in one sentence.</p>
+        placeholder="{{ __('e.g. How do I read a CSV file into a pandas DataFrame?') }}" />
+    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Summarize the problem in one sentence.') }}</p>
     <x-input-error :messages="$errors->get('title')" class="mt-2" />
 </div>
 
 <div>
-    <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">Details</span>
+    <span class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Details') }}</span>
     <div class="mt-1">
         @include('threads.partials.editor', [
             'name' => 'body',
-            'label' => 'Details',
+            'label' => __('Details'),
             'rows' => 12,
-            'placeholder' => "Describe the problem.\n\n```python\n# paste your code here\n```",
+            'placeholder' => __('Describe the problem.')."\n\n```python\n# ".__('paste your code here')."\n```",
         ])
     </div>
 </div>
 
 <div>
-    <x-input-label for="tags" value="Tags (optional)" />
+    <x-input-label for="tags" :value="__('Tags (optional)')" />
     <x-text-input id="tags" name="tags" type="text" class="mt-1 block w-full font-mono" maxlength="200" autocomplete="off"
         :value="old('tags', isset($thread) ? $thread->tags->pluck('name')->join(', ') : '')"
-        placeholder="e.g. pandas, csv" aria-describedby="tags-help" />
-    <p id="tags-help" class="mt-1 text-xs text-gray-500 dark:text-gray-400">Up to 5 tags, separated by commas or spaces.</p>
+        placeholder="{{ __('e.g. pandas, csv') }}" aria-describedby="tags-help" />
+    <p id="tags-help" class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ __('Up to 5 tags, separated by commas or spaces.') }}</p>
     <x-input-error :messages="collect([$errors->get('tags'), $errors->get('tag_names'), $errors->get('tag_names.*')])->flatten()->unique()->all()" class="mt-2" />
 </div>
